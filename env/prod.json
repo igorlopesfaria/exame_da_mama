@@ -1,0 +1,4 @@
+{
+  "ENVIRONMENT": "prod",
+  "URL_BASE": "https://auth.shared.wortya.net"
+}

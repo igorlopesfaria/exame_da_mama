@@ -1,0 +1,42 @@
+name: exames_da_mama_app
+description: "A new Flutter project."
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.11.3
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  flora:
+    path: packages/flora
+  commons_navigation:
+    path: packages/commons/navigation
+  commons_infra:
+    path: packages/commons/infra
+  commons_user:
+    path: packages/commons/user
+  commons_security:
+    path: packages/commons/security
+  feature_splash:
+    path: packages/features/splash
+  feature_initialization:
+    path: packages/features/initialization
+  flutter_bloc: ^9.1.1
+  injectable: ^2.6.0
+  get_it: ^9.1.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^6.0.0
+  build_runner: ^2.11.0
+  injectable_generator: ^2.12.1
+
+flutter:
+  uses-material-design: true

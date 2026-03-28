@@ -1,0 +1,6 @@
+arb-dir: lib/presentation/string
+template-arb-file: intl_pt.arb
+output-localization-file: initialization_localizations.dart
+output-class: InitializationLocalizations
+output-dir: lib/presentation/string
+nullable-getter: false
