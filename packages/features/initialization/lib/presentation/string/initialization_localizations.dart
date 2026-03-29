@@ -104,7 +104,7 @@ abstract class InitializationLocalizations {
   /// No description provided for @appTitle.
   ///
   /// In pt, this message translates to:
-  /// **'Exame da Mama'**
+  /// **'Exames da Mama'**
   String get appTitle;
 
   /// No description provided for @appSubtitle.

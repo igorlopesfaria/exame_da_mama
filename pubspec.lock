@@ -286,7 +286,7 @@ packages:
   flora:
     dependency: "direct main"
     description:
-      path: "packages/flora"
+      path: "packages/design_system/flora"
       relative: true
     source: path
     version: "0.0.0"

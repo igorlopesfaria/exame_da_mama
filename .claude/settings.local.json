@@ -14,7 +14,22 @@
       "Bash(flutter gen-l10n:*)",
       "Bash(gh auth:*)",
       "Bash(git init:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git branch:*)",
+      "Bash(brew install:*)",
+      "Bash(git commit:*)",
+      "Bash(gh repo:*)",
+      "Bash(git checkout:*)",
+      "Bash(git push:*)",
+      "Bash(gh api:*)",
+      "Bash(find /Users/igorlopesfaria/workspace_mobile/exame_da_mama/packages/flora -maxdepth 3 -not -path */build* -not -path */.dart_tool* -not -path */.git* -not -path */.idea* -not -path */ios* -not -path */android* -not -path *.xcodeproj* -not -path *.xcworkspace* -not -path */ephemeral*)",
+      "Bash(ls /Users/igorlopesfaria/workspace_mobile/exame_da_mama/packages/commons/*/pubspec.yaml)",
+      "Bash(ls:*)",
+      "Bash(/tmp/project_structure_report.txt:*)",
+      "Read(//tmp/**)",
+      "Bash(cp -r flora/sample design_system/sample)",
+      "Bash(mv flora:*)",
+      "Bash(rm -rf design_system/flora/sample)"
     ]
   }
 }

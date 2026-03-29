@@ -13,7 +13,7 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.8
   flora:
-    path: packages/flora
+    path: packages/design_system/flora
   commons_navigation:
     path: packages/commons/navigation
   commons_infra:

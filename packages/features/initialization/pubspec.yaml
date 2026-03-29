@@ -18,7 +18,7 @@ dependencies:
   injectable: ^2.6.0
   get_it: ^9.0.5
   flora:
-    path: ../../flora
+    path: ../../design_system/flora
   commons_navigation:
     path: ../../commons/navigation
 

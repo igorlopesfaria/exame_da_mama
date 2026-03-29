@@ -219,7 +219,7 @@ packages:
   flora:
     dependency: "direct main"
     description:
-      path: "../../flora"
+      path: "../../design_system/flora"
       relative: true
     source: path
     version: "0.0.0"
