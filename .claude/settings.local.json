@@ -30,7 +30,9 @@
       "Bash(cp -r flora/sample design_system/sample)",
       "Bash(mv flora:*)",
       "Bash(rm -rf design_system/flora/sample)",
-      "Bash(find /Users/igorlopesfaria/workspace_mobile/exame_da_mama -name *.g.dart -o -name *.freezed.dart -o -name *.mocks.dart -o -name *.config.dart)"
+      "Bash(find /Users/igorlopesfaria/workspace_mobile/exame_da_mama -name *.g.dart -o -name *.freezed.dart -o -name *.mocks.dart -o -name *.config.dart)",
+      "Bash(git rm:*)",
+      "Bash(git check-ignore:*)"
     ]
   }
 }
