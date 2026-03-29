@@ -1,0 +1,17 @@
+{
+  "@@locale": "en",
+
+  "feedbackEmptyTitle": "No exams yet",
+  "feedbackEmptyDescription": "Add your first exam to start tracking your health.",
+  "feedbackEmptyPrimaryLabel": "Add exam",
+
+  "feedbackConnectionErrorTitle": "No internet connection",
+  "feedbackConnectionErrorDescription": "Check your connection and try again.",
+  "feedbackConnectionErrorPrimaryLabel": "Try again",
+
+  "feedbackGenericErrorTitle": "Something went wrong",
+  "feedbackGenericErrorDescription": "An unexpected error occurred. Please try again later.",
+  "feedbackGenericErrorPrimaryLabel": "Try again",
+
+  "feedbackSecondaryBackHome": "Back to home"
+}

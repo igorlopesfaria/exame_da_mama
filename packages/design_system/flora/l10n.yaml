@@ -1,0 +1,5 @@
+arb-dir: lib/core/strings
+template-arb-file: flora_pt.arb
+output-dir: lib/core/strings/localizations
+output-localization-file: flora_localizations.dart
+output-class: FloraLocalizations
