@@ -1,4 +1,7 @@
 import 'package:flora/flora.dart';
+import 'package:flora_sample/media/flora_image_sample.dart';
+import 'package:flora_sample/media/flora_icon_sample.dart';
+import 'package:flora_sample/media/flora_animation_sample.dart';
 import 'package:flora_sample/navigation/flora_app_bar_sample.dart';
 import 'package:flora_sample/navigation/flora_navigation_bar_sample.dart';
 import 'package:flora_sample/button/flora_button_sample.dart';
@@ -37,6 +40,9 @@ class SampleList extends StatelessWidget {
     _SampleItem(title: 'Feedback', subtitle: 'Empty, error, connection states', screen: FloraFeedbackSample()),
     _SampleItem(title: 'Text', subtitle: 'Display, headline, title, label, body scales', screen: FloraTextSample()),
     _SampleItem(title: 'Toast', subtitle: 'Info, success, warning, error variants', screen: FloraToastSample()),
+    _SampleItem(title: 'Image', subtitle: 'Asset, network, fit variants, border radius', screen: FloraImageSample()),
+    _SampleItem(title: 'Icon', subtitle: 'Flutter icon, asset, colors, sizes', screen: FloraIconSample()),
+    _SampleItem(title: 'Animation', subtitle: 'Lottie asset, repeat, reverse, fit variants', screen: FloraAnimationSample()),
   ];
 
   @override

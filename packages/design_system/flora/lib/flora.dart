@@ -109,3 +109,21 @@ export 'package:flora/components/text/flora_text.dart';
 export 'package:flora/components/toast/flora_toast_attributes.dart';
 export 'package:flora/components/toast/flora_toast_style.dart';
 export 'package:flora/components/toast/flora_toast.dart';
+
+// Media — Assets
+export 'package:flora/components/media/flora_media_assets.dart';
+
+// Media — Image
+export 'package:flora/components/media/image/flora_image_attributes.dart';
+export 'package:flora/components/media/image/flora_image_style.dart';
+export 'package:flora/components/media/image/flora_image.dart';
+
+// Media — Icon
+export 'package:flora/components/media/icon/flora_icon_attributes.dart';
+export 'package:flora/components/media/icon/flora_icon_style.dart';
+export 'package:flora/components/media/icon/flora_icon.dart';
+
+// Media — Animation
+export 'package:flora/components/media/animation/flora_animation_attributes.dart';
+export 'package:flora/components/media/animation/flora_animation_style.dart';
+export 'package:flora/components/media/animation/flora_animation.dart';

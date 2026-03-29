@@ -32,7 +32,11 @@
       "Bash(rm -rf design_system/flora/sample)",
       "Bash(find /Users/igorlopesfaria/workspace_mobile/exame_da_mama -name *.g.dart -o -name *.freezed.dart -o -name *.mocks.dart -o -name *.config.dart)",
       "Bash(git rm:*)",
-      "Bash(git check-ignore:*)"
+      "Bash(git check-ignore:*)",
+      "Bash(cp /Users/igorlopesfaria/workspace_mobile/exame_da_mama/packages/design_system/media/lib/components/image/* /Users/igorlopesfaria/workspace_mobile/exame_da_mama/packages/design_system/flora/lib/components/media/image/)",
+      "Bash(cp /Users/igorlopesfaria/workspace_mobile/exame_da_mama/packages/design_system/media/lib/components/icon/* /Users/igorlopesfaria/workspace_mobile/exame_da_mama/packages/design_system/flora/lib/components/media/icon/)",
+      "Bash(cp /Users/igorlopesfaria/workspace_mobile/exame_da_mama/packages/design_system/media/lib/components/animation/* /Users/igorlopesfaria/workspace_mobile/exame_da_mama/packages/design_system/flora/lib/components/media/animation/)",
+      "Bash(python3:*)"
     ]
   }
 }
