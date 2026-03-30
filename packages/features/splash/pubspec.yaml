@@ -5,7 +5,7 @@ version: 1.0.0
 publish_to: "none"
 
 environment:
-  sdk: ">=3.8.0 <4.0.0"
+  sdk: ">=3.9.0 <4.0.0"
 
 dependencies:
   flutter:
@@ -13,7 +13,7 @@ dependencies:
 
   flutter_bloc: ^9.1.1
   injectable: ^2.6.0
-  get_it: ^9.0.5
+  get_it: ^9.1.1
   commons_navigation:
     path: ../../commons/navigation
   commons_security:

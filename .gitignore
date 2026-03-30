@@ -1,9 +1,95 @@
-# Miscellaneous
+# ============================================================
+# Flutter / Dart
+# ============================================================
+**/doc/api/
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+**/build/
+**/coverage/
+
+# pubspec.lock: apps commit it, libraries do not
+# (dart.dev/guides/libraries/private-files#pubspeclock)
+packages/**/pubspec.lock
+!packages/design_system/sample/pubspec.lock
+
+# ============================================================
+# Android
+# ============================================================
+**/android/.gradle/
+**/android/captures/
+**/android/gradlew
+**/android/gradlew.bat
+**/android/local.properties
+**/android/GeneratedPluginRegistrant.java
+**/android/.cxx/
+**/android/key.properties
+**/*.keystore
+**/*.jks
+**/android/app/debug/
+**/android/app/profile/
+**/android/app/release/
+gradle-wrapper.jar
+
+# ============================================================
+# iOS / macOS
+# ============================================================
+**/ios/Pods/
+**/macos/Pods/
+**/ios/.symlinks/
+**/macos/.symlinks/
+**/DerivedData/
+xcuserdata/
+**/xcuserdata/
+**/*.pbxuser
+!default.pbxuser
+**/*.mode1v3
+!default.mode1v3
+**/*.mode2v3
+!default.mode2v3
+**/*.perspectivev3
+!default.perspectivev3
+**/ios/Flutter/.last_build_id
+**/Flutter/App.framework
+**/Flutter/Flutter.framework
+**/Flutter/Flutter.podspec
+**/Flutter/Generated.xcconfig
+**/Flutter/ephemeral/
+**/Flutter/app.flx
+**/Flutter/app.zip
+**/Flutter/flutter_assets/
+**/Flutter/flutter_export_environment.sh
+**/ServiceDefinitions.json
+**/Runner/GeneratedPluginRegistrant.*
+
+# ============================================================
+# IDE
+# ============================================================
+# IntelliJ / Android Studio
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# VS Code (uncomment to ignore)
+#.vscode/
+
+# ============================================================
+# OS
+# ============================================================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ============================================================
+# Misc
+# ============================================================
 *.class
 *.log
 *.pyc
 *.swp
-.DS_Store
 .atom/
 .build/
 .buildlog/
@@ -11,35 +97,25 @@
 .svn/
 .swiftpm/
 migrate_working_dir/
+**/.vagrant/
+**/.generated/
+**/dgph
+*.moved-aside
+**/*sync/
+.sconsign.dblite
+*.tags*
+profile
 
-# IntelliJ related
-*.iml
-*.ipr
-*.iws
-.idea/
-
-# The .vscode folder contains launch configuration and tasks you configure in
-# VS Code which you may wish to be included in version control, so this line
-# is commented out by default.
-#.vscode/
-
-# Flutter/Dart/Pub related
-**/doc/api/
-**/ios/Flutter/.last_build_id
-.dart_tool/
-.flutter-plugins-dependencies
-.pub-cache/
-.pub/
-/build/
-/coverage/
-
-# Symbolication related
+# Symbolication / obfuscation
 app.*.symbols
-
-# Obfuscation related
 app.*.map.json
 
-# Android Studio will place build artifacts here
-/android/app/debug
-/android/app/profile
-/android/app/release
+# Secrets / environment
+.env
+.env.*
+*.env
+
+# ============================================================
+# Claude Code
+# ============================================================
+.claude/settings.local.json

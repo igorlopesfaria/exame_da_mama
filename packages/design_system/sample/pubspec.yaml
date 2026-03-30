@@ -1,0 +1,19 @@
+name: flora_sample
+description: Flora Design System — Sample App
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.9.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  intl: any
+  flora:
+    path: ../flora
+
+flutter:
+  uses-material-design: true

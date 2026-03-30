@@ -1,0 +1,29 @@
+name: flora
+description: Flora Design System — Material Design 3 para app de saúde feminina
+
+publish_to: "none"
+
+environment:
+  sdk: ">=3.9.0 <4.0.0"
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  intl: any
+  google_fonts: ^8.0.2
+  cached_network_image: ^3.4.1
+  lottie: ^3.3.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
+  generate: true
+  assets:
+    - assets/animations/
+    - assets/icons/
+    - assets/images/
