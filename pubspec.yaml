@@ -21,6 +21,9 @@ dependencies:
     path: packages/commons/navigation
   commons_infra:
     path: packages/commons/infra
+  commons_observability:
+    path: packages/commons/observability
+  firebase_crashlytics: ^4.3.0
   commons_user:
     path: packages/commons/user
   commons_security:
