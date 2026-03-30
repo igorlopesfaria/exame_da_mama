@@ -180,4 +180,96 @@ void main() {
       verify(() => vendor.startSpan('user.profile.load', any())).called(1);
     });
   });
+
+  group('monitorAsync — success path', () {
+    test('returns the block result', () async {
+      final result = await sut.monitorAsync('catalog.list', block: () async => 42);
+      expect(result, 42);
+    });
+
+    test('logs operation.success at INFO level', () async {
+      await sut.monitorAsync('checkout.process', block: () async {});
+
+      final captured = verify(() => vendor.log(captureAny())).captured;
+      final successEvent = captured.last as LogEvent;
+
+      expect(successEvent.event, 'checkout.process.success');
+      expect(successEvent.level, LogLevel.info);
+    });
+
+    test('forwards attributes to success log', () async {
+      await sut.monitorAsync(
+        'cart.addProduct',
+        attributes: {'productId': 'sku-99', 'price': 49.9},
+        block: () async {},
+      );
+
+      final captured = verify(() => vendor.log(captureAny())).captured;
+      final event = captured.last as LogEvent;
+
+      expect(event.attributes['productId'], 'sku-99');
+      expect(event.attributes['price'], 49.9);
+    });
+
+    test('starts and finishes a span with the operation name', () async {
+      await sut.monitorAsync('catalog.list', block: () async {});
+
+      verify(() => vendor.startSpan('catalog.list', any())).called(1);
+      verify(() => vendor.finishSpan(any())).called(1);
+    });
+  });
+
+  group('monitorAsync — failure path', () {
+    test('rethrows the exception from block', () async {
+      await expectLater(
+        () => sut.monitorAsync('payment.process', block: () async => throw Exception('timeout')),
+        throwsA(isA<Exception>()),
+      );
+    });
+
+    test('logs operation.failed at ERROR level', () async {
+      await expectLater(
+        () => sut.monitorAsync('checkout.process', block: () async => throw Exception('gateway error')),
+        throwsException,
+      );
+
+      final captured = verify(() => vendor.recordError(captureAny())).captured;
+      final event = captured.first as LogEvent;
+
+      expect(event.event, 'checkout.process.failed');
+      expect(event.level, LogLevel.error);
+    });
+
+    test('includes errorMessage and exceptionType in failure attributes', () async {
+      await expectLater(
+        () => sut.monitorAsync('payment.process', block: () async => throw StateError('bad state')),
+        throwsStateError,
+      );
+
+      final captured = verify(() => vendor.recordError(captureAny())).captured;
+      final event = captured.first as LogEvent;
+
+      expect(event.attributes['errorMessage'], contains('bad state'));
+      expect(event.attributes['exceptionType'], 'StateError');
+    });
+
+    test('finishSpan is always called even when async block throws', () async {
+      await expectLater(
+        () => sut.monitorAsync('risky.op', block: () async => throw Exception('boom')),
+        throwsException,
+      );
+
+      verify(() => vendor.finishSpan(any())).called(1);
+    });
+
+    test('does not call vendor.log on failure (goes to recordError)', () async {
+      await expectLater(
+        () => sut.monitorAsync('op', block: () async => throw Exception()),
+        throwsException,
+      );
+
+      verifyNever(() => vendor.log(any()));
+      verify(() => vendor.recordError(any())).called(1);
+    });
+  });
 }

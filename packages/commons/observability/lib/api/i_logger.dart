@@ -9,6 +9,8 @@ abstract interface class ILogger {
     StackTrace? stackTrace,
   });
 
+  void verbose(String event, {Map<String, Object?> attributes = const {}});
+
   void debug(String event, {Map<String, Object?> attributes = const {}});
 
   void info(String event, {Map<String, Object?> attributes = const {}});

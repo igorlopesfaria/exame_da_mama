@@ -91,6 +91,10 @@ class _LoggerImpl implements ILogger {
   }
 
   @override
+  void verbose(String event, {Map<String, Object?> attributes = const {}}) =>
+      log(LogLevel.verbose, event, attributes: attributes);
+
+  @override
   void debug(String event, {Map<String, Object?> attributes = const {}}) =>
       log(LogLevel.debug, event, attributes: attributes);
 

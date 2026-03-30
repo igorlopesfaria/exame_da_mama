@@ -36,6 +36,12 @@ void main() {
   });
 
   group('Logger — level filtering', () {
+    test('drops VERBOSE log when minLogLevel is INFO', () {
+      sut.logger.verbose('should.be.dropped');
+      verifyNever(() => vendor.log(any()));
+      verifyNever(() => vendor.recordError(any()));
+    });
+
     test('drops DEBUG log when minLogLevel is INFO', () {
       sut.logger.debug('should.be.dropped');
       verifyNever(() => vendor.log(any()));

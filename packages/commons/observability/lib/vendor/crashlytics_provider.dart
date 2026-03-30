@@ -5,6 +5,10 @@ import 'package:commons_observability/model/observability_error.dart';
 import 'package:commons_observability/vendor/i_vendor_provider.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
+// Only WARN and above are forwarded as Crashlytics breadcrumbs to avoid
+// rotating out high-signal entries with frequent INFO/DEBUG noise.
+const _crashlyticsMinLevel = LogLevel.warn;
+
 /// Crashlytics does not support distributed tracing or metrics.
 /// This handle is a no-op placeholder to satisfy the [ITracer] contract.
 class _NoOpSpanHandle implements SpanHandle {
@@ -27,6 +31,7 @@ class CrashlyticsProvider implements IVendorProvider {
 
   @override
   void log(LogEvent event) {
+    if (event.level < _crashlyticsMinLevel) return;
     final buffer = StringBuffer('[${event.level.name.toUpperCase()}] ${event.event}');
     if (event.attributes.isNotEmpty) {
       final attrs = event.attributes.entries.map((e) => '${e.key}=${e.value}').join(', ');

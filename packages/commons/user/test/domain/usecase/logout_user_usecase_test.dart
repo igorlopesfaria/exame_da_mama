@@ -46,6 +46,7 @@ void main() {
         (_) => fail('expected Right'),
         (u) => expect(u, unit),
       );
+      verify(() => mockLogger.info('user.logout.success')).called(1);
     });
 
     test('returns Left(failure) when clearUser fails', () async {
@@ -61,6 +62,10 @@ void main() {
         },
         (_) => fail('expected Left'),
       );
+      verify(() => mockLogger.error(
+        'user.logout.failed',
+        attributes: any(named: 'attributes'),
+      )).called(1);
     });
   });
 }

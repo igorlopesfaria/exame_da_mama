@@ -15,10 +15,11 @@ void main() async {
   late final FirebaseApp app;
   try {
     app = await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  } catch (_) {
+  } on FirebaseException {
     app = Firebase.app();
   }
   AppEnvironment.validate();
+  DefaultFirebaseOptions.validate();
   debugPrint('[App] Environment: ${AppEnvironment.name} | baseUrl: ${AppEnvironment.baseUrl}');
   debugPrint('[Firebase] Connected ✓ — project: ${app.options.projectId}');
   await SystemChrome.setPreferredOrientations([
