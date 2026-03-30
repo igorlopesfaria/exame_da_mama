@@ -5,6 +5,7 @@ import 'package:commons_observability/api/i_tracer.dart';
 import 'package:commons_observability/model/log_event.dart';
 import 'package:commons_observability/model/log_level.dart';
 import 'package:commons_observability/vendor/i_vendor_provider.dart';
+import 'package:flutter/foundation.dart';
 
 class ObservabilityImpl implements IObservability {
   ObservabilityImpl({
@@ -75,6 +76,12 @@ class _LoggerImpl implements ILogger {
       throwable: throwable,
       stackTrace: stackTrace,
     );
+
+    if (kDebugMode) {
+      debugPrint('[${level.name.toUpperCase()}] $event'
+          '${logEvent.attributes.isNotEmpty ? ' | ${logEvent.attributes}' : ''}'
+          '${throwable != null ? ' | $throwable' : ''}');
+    }
 
     if (level >= LogLevel.error) {
       _vendor.recordError(logEvent);

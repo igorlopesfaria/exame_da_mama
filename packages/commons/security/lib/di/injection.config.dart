@@ -42,16 +42,22 @@ extension GetItInjectableX on _i174.GetIt {
   }) {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
     gh.factory<_i911.ISecurityLocalDataSource>(
-      () => _i1051.SecurityLocalDataSource(gh<_i558.FlutterSecureStorage>()),
+      () => _i1051.SecurityLocalDataSource(
+        gh<_i558.FlutterSecureStorage>(),
+        gh<_i731.IObservability>(),
+      ),
     );
     gh.factory<_i582.ISecurityLocalRepository>(
       () => _i860.SecurityLocalRepository(gh<_i911.ISecurityLocalDataSource>()),
     );
-    gh.factory<_i969.FindTokenUseCase>(
-      () => _i969.FindTokenUseCase(gh<_i582.ISecurityLocalRepository>()),
-    );
     gh.factory<_i510.ISecurityRemoteDataSource>(
       () => _i177.SecurityRemoteDataSource(gh<_i285.IHttpClient>()),
+    );
+    gh.factory<_i969.FindTokenUseCase>(
+      () => _i969.FindTokenUseCase(
+        gh<_i582.ISecurityLocalRepository>(),
+        gh<_i731.IObservability>(),
+      ),
     );
     gh.factory<_i985.LogoutUseCase>(
       () => _i985.LogoutUseCase(

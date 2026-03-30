@@ -39,7 +39,10 @@ extension GetItInjectableX on _i174.GetIt {
   }) {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
     gh.factory<_i1033.IUserLocalDataSource>(
-      () => _i2.UserLocalDataSource(gh<_i558.FlutterSecureStorage>()),
+      () => _i2.UserLocalDataSource(
+        gh<_i558.FlutterSecureStorage>(),
+        gh<_i731.IObservability>(),
+      ),
     );
     gh.factory<_i173.IUserLocalRepository>(
       () => _i94.UserLocalRepository(gh<_i1033.IUserLocalDataSource>()),
