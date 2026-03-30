@@ -114,6 +114,9 @@ app.*.map.json
 .env
 .env.*
 *.env
+env/*.json
+**/google-services.json
+**/GoogleService-Info.plist
 
 # ============================================================
 # Claude Code
