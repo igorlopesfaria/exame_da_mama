@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "879430397793",
+    "project_id": "exames-da-mama-prod",
+    "storage_bucket": "exames-da-mama-prod.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:879430397793:android:68eea10ce69a90af56df20",
+        "android_client_info": {
+          "package_name": "br.com.examesdamama"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBqzYE2nsEJW5q7ssMFxziGwTI-f6z9tyI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

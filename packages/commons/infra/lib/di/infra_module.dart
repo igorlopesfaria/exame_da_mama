@@ -1,3 +1,4 @@
+import 'package:commons_infra/environment/app_environment.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:injectable/injectable.dart';
@@ -7,6 +8,7 @@ abstract class InfraModule {
   @singleton
   Dio get dio => Dio(
         BaseOptions(
+          baseUrl: AppEnvironment.baseUrl,
           connectTimeout: const Duration(seconds: 10),
           receiveTimeout: const Duration(seconds: 30),
           sendTimeout: const Duration(seconds: 30),

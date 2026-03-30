@@ -1,4 +1,16 @@
 {
-    "ENVIRONMENT": "staging",
-    "URL_BASE": "https://auth.shared.wortya.net"
+  "ENVIRONMENT": "staging",
+  "URL_BASE": "https://auth.shared.wortya.net",
+
+  "FIREBASE_ANDROID_API_KEY": "AIzaSyA5_HLlz54bSF2jQ91mMeQasGPCDymwHVM",
+  "FIREBASE_ANDROID_APP_ID": "1:752623075251:android:0a7991e79c0101fcf555c6",
+  "FIREBASE_ANDROID_MESSAGING_SENDER_ID": "752623075251",
+  "FIREBASE_ANDROID_PROJECT_ID": "exames-da-mama-staging",
+  "FIREBASE_ANDROID_STORAGE_BUCKET": "exames-da-mama-staging.firebasestorage.app",
+  "FIREBASE_IOS_API_KEY": "AIzaSyCcrVn9eChjS8GXiX8q5_NmOB4CXhGw47I",
+  "FIREBASE_IOS_APP_ID": "1:752623075251:ios:579fe98c4e0616c1f555c6",
+  "FIREBASE_IOS_MESSAGING_SENDER_ID": "752623075251",
+  "FIREBASE_IOS_PROJECT_ID": "exames-da-mama-staging",
+  "FIREBASE_IOS_STORAGE_BUCKET": "exames-da-mama-staging.firebasestorage.app",
+  "FIREBASE_IOS_BUNDLE_ID": "br.com.examesdamama.staging"
 }
