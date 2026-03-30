@@ -1,4 +1,5 @@
 import 'package:commons_navigation/commons_navigation.dart';
+import 'package:feature_account_validation/presentation/screen/account_validation_screen.dart';
 import 'package:feature_initialization/presentation/screen/initialization_screen.dart';
 import 'package:feature_splash/presentation/screen/splash_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -27,6 +28,12 @@ class AppRouter {
           view: const Scaffold(
             body: Center(child: Text('Login')),
           ),
+          settings: settings,
+        );
+
+      case AppPaths.accountValidationRoute:
+        return _buildRoute(
+          view: const AccountValidationScreen(),
           settings: settings,
         );
 
