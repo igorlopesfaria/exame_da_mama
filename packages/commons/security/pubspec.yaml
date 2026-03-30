@@ -17,6 +17,8 @@ dependencies:
   fpdart: ^1.1.0
   commons_infra:
     path: ../infra
+  commons_observability:
+    path: ../observability
 
 dev_dependencies:
   flutter_test:
