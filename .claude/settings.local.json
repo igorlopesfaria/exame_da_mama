@@ -40,7 +40,8 @@
       "Bash(flutter devices:*)",
       "Bash(flutter run:*)",
       "Bash(sed -i '' 's/PRODUCT_BUNDLE_IDENTIFIER = com\\\\.example\\\\.examesDaMamaApp;/PRODUCT_BUNDLE_IDENTIFIER = br.com.examesdamama;/g' /Users/igorlopesfaria/workspace_mobile/exame_da_mama/ios/Runner.xcodeproj/project.pbxproj)",
-      "Bash(sed -i '' 's/PRODUCT_BUNDLE_IDENTIFIER = com\\\\.example\\\\.examesDaMamaApp\\\\.RunnerTests;/PRODUCT_BUNDLE_IDENTIFIER = br.com.examesdamama.RunnerTests;/g' /Users/igorlopesfaria/workspace_mobile/exame_da_mama/ios/Runner.xcodeproj/project.pbxproj)"
+      "Bash(sed -i '' 's/PRODUCT_BUNDLE_IDENTIFIER = com\\\\.example\\\\.examesDaMamaApp\\\\.RunnerTests;/PRODUCT_BUNDLE_IDENTIFIER = br.com.examesdamama.RunnerTests;/g' /Users/igorlopesfaria/workspace_mobile/exame_da_mama/ios/Runner.xcodeproj/project.pbxproj)",
+      "Bash(grep -v \"^$\\\\|No dependencies\\\\|dart pub outdated\\\\|Package Name\\\\|all up-to-date\")"
     ]
   }
 }
