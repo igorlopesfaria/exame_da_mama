@@ -31,6 +31,7 @@ void main() {
     when(() => vendor.startSpan(any(), any())).thenReturn(_FakeSpanHandle());
     when(() => vendor.finishSpan(any())).thenReturn(null);
     when(() => vendor.markSpanError(any(), any())).thenReturn(null);
+    when(() => vendor.setCollectionEnabled(any())).thenReturn(null);
   });
 
   group('monitor — success path', () {

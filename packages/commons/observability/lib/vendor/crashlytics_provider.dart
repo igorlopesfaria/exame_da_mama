@@ -1,6 +1,7 @@
 import 'package:commons_observability/api/i_tracer.dart';
 import 'package:commons_observability/model/log_event.dart';
 import 'package:commons_observability/model/log_level.dart';
+import 'package:commons_observability/model/observability_error.dart';
 import 'package:commons_observability/vendor/i_vendor_provider.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
@@ -41,7 +42,7 @@ class CrashlyticsProvider implements IVendorProvider {
         .toList();
 
     _crashlytics.recordError(
-      event.throwable ?? event.event,
+      event.throwable ?? ObservabilityError(event.event),
       event.stackTrace,
       reason: event.event,
       information: information,
@@ -84,5 +85,10 @@ class CrashlyticsProvider implements IVendorProvider {
       default:
         _crashlytics.setCustomKey(key, value.toString());
     }
+  }
+
+  @override
+  void setCollectionEnabled(bool enabled) {
+    _crashlytics.setCrashlyticsCollectionEnabled(enabled);
   }
 }

@@ -16,4 +16,8 @@ abstract interface class IObservability {
   /// Sets a persistent key-value pair attached to all subsequent reports.
   /// Use for session context, app variant, or feature flags.
   void setCustomKey(String key, Object value);
+
+  /// Enables or disables crash report collection.
+  /// Call once at startup — pass false in mock/debug to avoid polluting dashboards.
+  void setCollectionEnabled(bool enabled);
 }

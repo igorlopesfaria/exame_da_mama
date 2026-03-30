@@ -4,7 +4,6 @@ import 'package:exames_da_mama_app/di/app_injection.dart';
 import 'package:exames_da_mama_app/firebase_options.dart';
 import 'package:exames_da_mama_app/start.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flora/flora.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -37,15 +36,15 @@ void main() async {
 void _setupCrashReporting() {
   final observability = GetIt.instance<IObservability>();
 
-  // Disable Crashlytics in mock/debug so reports don't pollute the dashboard.
-  FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(
-    !AppEnvironment.isMock && !kDebugMode,
-  );
+  // Delegate collection toggle through IObservability — no SDK import needed here.
+  observability.setCollectionEnabled(!AppEnvironment.isMock && !kDebugMode);
 
   observability.setCustomKey('environment', AppEnvironment.name);
 
-  // Catch errors thrown inside the Flutter framework (widget build, layout, etc).
+  // Chain the original handler so debug red-screen and console output are preserved.
+  final originalOnError = FlutterError.onError;
   FlutterError.onError = (details) {
+    originalOnError?.call(details);
     observability.logger.fatal(
       'flutter.framework_error',
       throwable: details.exception,

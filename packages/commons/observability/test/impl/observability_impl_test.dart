@@ -32,6 +32,7 @@ void main() {
     when(() => vendor.markSpanError(any(), any())).thenReturn(null);
     when(() => vendor.setUserIdentifier(any())).thenReturn(null);
     when(() => vendor.setCustomKey(any(), any())).thenReturn(null);
+    when(() => vendor.setCollectionEnabled(any())).thenReturn(null);
   });
 
   group('Logger — level filtering', () {
@@ -144,6 +145,11 @@ void main() {
     test('setCustomKey delegates to vendor', () {
       sut.setCustomKey('app_flavor', 'staging');
       verify(() => vendor.setCustomKey('app_flavor', 'staging')).called(1);
+    });
+
+    test('setCollectionEnabled delegates to vendor', () {
+      sut.setCollectionEnabled(false);
+      verify(() => vendor.setCollectionEnabled(false)).called(1);
     });
   });
 

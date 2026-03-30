@@ -24,4 +24,8 @@ abstract interface class IVendorProvider {
 
   /// Sets a persistent key-value attribute on all subsequent reports.
   void setCustomKey(String key, Object value);
+
+  /// Enables or disables crash report collection.
+  /// Should be disabled in mock/debug environments to avoid polluting dashboards.
+  void setCollectionEnabled(bool enabled);
 }

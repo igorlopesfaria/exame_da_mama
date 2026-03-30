@@ -8,11 +8,8 @@ import 'package:injectable/injectable.dart';
 @module
 abstract class ObservabilityModule {
   @singleton
-  FirebaseCrashlytics get crashlytics => FirebaseCrashlytics.instance;
-
-  @singleton
-  IVendorProvider vendorProvider(FirebaseCrashlytics crashlytics) =>
-      CrashlyticsProvider(crashlytics);
+  IVendorProvider get vendorProvider =>
+      CrashlyticsProvider(FirebaseCrashlytics.instance);
 
   @singleton
   IObservability observability(IVendorProvider vendor) =>

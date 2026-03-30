@@ -6,5 +6,6 @@ enum LogLevel {
   error,
   fatal;
 
+  bool operator <(LogLevel other) => index < other.index;
   bool operator >=(LogLevel other) => index >= other.index;
 }

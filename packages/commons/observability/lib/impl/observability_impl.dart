@@ -41,6 +41,9 @@ class ObservabilityImpl implements IObservability {
 
   @override
   void setCustomKey(String key, Object value) => _vendor.setCustomKey(key, value);
+
+  @override
+  void setCollectionEnabled(bool enabled) => _vendor.setCollectionEnabled(enabled);
 }
 
 // ---------------------------------------------------------------------------
@@ -62,7 +65,7 @@ class _LoggerImpl implements ILogger {
     Object? throwable,
     StackTrace? stackTrace,
   }) {
-    if (!(level >= _minLevel)) return;
+    if (level < _minLevel) return;
 
     final sanitized = _sanitize(attributes);
     final logEvent = LogEvent(
@@ -114,10 +117,11 @@ class _LoggerImpl implements ILogger {
     return Map.fromEntries(
       attributes.entries
           .where((e) => !_piiKeys.any((pii) => e.key.toLowerCase().contains(pii)))
-          .map((e) => MapEntry(
-                e.key,
-                e.value is String ? (e.value as String).substring(0, (e.value as String).length.clamp(0, 512)) : e.value,
-              )),
+          .map((e) {
+            final v = e.value;
+            final truncated = v is String ? v.substring(0, v.length.clamp(0, 512)) : v;
+            return MapEntry(e.key, truncated);
+          }),
     );
   }
 }
