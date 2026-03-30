@@ -12,8 +12,9 @@
 import 'package:commons_infra/di/infra_module.dart' as _i827;
 import 'package:commons_infra/http/http_client.dart' as _i790;
 import 'package:commons_infra/http/i_http_client.dart' as _i285;
+import 'package:commons_observability/commons_observability.dart' as _i731;
 import 'package:dio/dio.dart' as _i361;
-import 'package:flutter_secure_storage/flutter_secure_storage.dart' as _i700;
+import 'package:flutter_secure_storage/flutter_secure_storage.dart' as _i558;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 
@@ -26,8 +27,10 @@ extension GetItInjectableX on _i174.GetIt {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
     final infraModule = _$InfraModule();
     gh.singleton<_i361.Dio>(() => infraModule.dio);
-    gh.singleton<_i700.FlutterSecureStorage>(() => infraModule.secureStorage);
-    gh.factory<_i285.IHttpClient>(() => _i790.HttpClient(gh<_i361.Dio>()));
+    gh.singleton<_i558.FlutterSecureStorage>(() => infraModule.secureStorage);
+    gh.factory<_i285.IHttpClient>(
+      () => _i790.HttpClient(gh<_i361.Dio>(), gh<_i731.IObservability>()),
+    );
     return this;
   }
 }

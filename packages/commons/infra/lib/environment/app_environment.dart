@@ -6,7 +6,9 @@ abstract final class AppEnvironment {
       String.fromEnvironment('URL_BASE', defaultValue: '');
 
   static void validate() {
-    assert(baseUrl.isNotEmpty, 'URL_BASE is not set. Run with --dart-define-from-file=env/<environment>.json');
+    if (baseUrl.isEmpty) {
+      throw StateError('URL_BASE is not set. Run with --dart-define-from-file=env/<environment>.json');
+    }
   }
 
   static bool get isMock => name == 'mock';

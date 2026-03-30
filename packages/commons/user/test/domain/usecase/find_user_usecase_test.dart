@@ -1,4 +1,5 @@
 import 'package:commons_infra/failures/app_failures.dart';
+import 'package:commons_observability/commons_observability.dart';
 import 'package:commons_user/domain/model/gender.dart';
 import 'package:commons_user/domain/model/user.dart';
 import 'package:commons_user/domain/repository/i_user_local_repository.dart';
@@ -10,10 +11,14 @@ import 'package:mocktail/mocktail.dart';
 
 class MockUserRemoteRepository extends Mock implements IUserRemoteRepository {}
 class MockUserLocalRepository extends Mock implements IUserLocalRepository {}
+class MockObservability extends Mock implements IObservability {}
+class MockLogger extends Mock implements ILogger {}
 
 void main() {
   late MockUserRemoteRepository mockRemoteRepo;
   late MockUserLocalRepository mockLocalRepo;
+  late MockObservability mockObservability;
+  late MockLogger mockLogger;
   late FindUserUseCase useCase;
 
   const tUser = User(
@@ -31,9 +36,14 @@ void main() {
   });
 
   setUp(() {
-    mockRemoteRepo = MockUserRemoteRepository();
-    mockLocalRepo  = MockUserLocalRepository();
-    useCase        = FindUserUseCase(mockRemoteRepo, mockLocalRepo);
+    mockRemoteRepo    = MockUserRemoteRepository();
+    mockLocalRepo     = MockUserLocalRepository();
+    mockLogger        = MockLogger();
+    mockObservability = MockObservability();
+    when(() => mockObservability.logger).thenReturn(mockLogger);
+    when(() => mockLogger.info(any(), attributes: any(named: 'attributes'))).thenReturn(null);
+    when(() => mockLogger.error(any(), throwable: any(named: 'throwable'), attributes: any(named: 'attributes'), stackTrace: any(named: 'stackTrace'))).thenReturn(null);
+    useCase = FindUserUseCase(mockRemoteRepo, mockLocalRepo, mockObservability);
   });
 
   group('FindUserUseCase', () {

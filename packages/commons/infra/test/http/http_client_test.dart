@@ -1,13 +1,18 @@
 import 'package:commons_infra/exceptions/app_exceptions.dart';
 import 'package:commons_infra/http/http_client.dart';
+import 'package:commons_observability/commons_observability.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockDio extends Mock implements Dio {}
+class MockObservability extends Mock implements IObservability {}
+class MockLogger extends Mock implements ILogger {}
 
 void main() {
   late MockDio mockDio;
+  late MockObservability mockObservability;
+  late MockLogger mockLogger;
   late HttpClient client;
 
   final requestOptions = RequestOptions(path: '/test');
@@ -20,7 +25,11 @@ void main() {
 
   setUp(() {
     mockDio = MockDio();
-    client = HttpClient(mockDio);
+    mockLogger = MockLogger();
+    mockObservability = MockObservability();
+    when(() => mockObservability.logger).thenReturn(mockLogger);
+    when(() => mockLogger.error(any(), throwable: any(named: 'throwable'), attributes: any(named: 'attributes'), stackTrace: any(named: 'stackTrace'))).thenReturn(null);
+    client = HttpClient(mockDio, mockObservability);
   });
 
   DioException _dioError(DioExceptionType type, {int? statusCode, Map<String, dynamic>? data}) {
@@ -59,6 +68,20 @@ void main() {
           .thenAnswer((_) async => Response(requestOptions: requestOptions, data: [1, 2, 3]));
 
       expect(() => client.get('/test'), throwsA(isA<ParseException>()));
+    });
+
+    test('logs error when ParseException is thrown', () async {
+      when(() => mockDio.get<dynamic>(any(), queryParameters: any(named: 'queryParameters')))
+          .thenAnswer((_) async => Response(requestOptions: requestOptions, data: [1, 2, 3]));
+
+      await expectLater(() => client.get('/test'), throwsA(isA<ParseException>()));
+
+      verify(() => mockLogger.error(
+        'http.request.failed',
+        throwable: any(named: 'throwable'),
+        attributes: any(named: 'attributes'),
+        stackTrace: any(named: 'stackTrace'),
+      )).called(1);
     });
 
     test('throws ParseException when response data is a string', () {

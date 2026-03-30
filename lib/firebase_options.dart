@@ -3,6 +3,22 @@ import 'package:flutter/foundation.dart'
     show defaultTargetPlatform, kIsWeb, TargetPlatform;
 
 class DefaultFirebaseOptions {
+  static void validate() {
+    if (kIsWeb) return;
+    final options = switch (defaultTargetPlatform) {
+      TargetPlatform.android => android,
+      TargetPlatform.iOS => ios,
+      _ => null,
+    };
+    if (options == null) return;
+    if (options.apiKey.isEmpty || options.appId.isEmpty || options.projectId.isEmpty) {
+      throw StateError(
+        'Firebase configuration is incomplete. '
+        'Run with --dart-define-from-file=env/<environment>.json',
+      );
+    }
+  }
+
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
       throw UnsupportedError(
