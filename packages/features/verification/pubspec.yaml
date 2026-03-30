@@ -1,0 +1,30 @@
+name: feature_verification
+description: Verification feature — email and phone code sending and verification
+
+version: 1.0.0
+publish_to: "none"
+
+environment:
+  sdk: ">=3.9.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  injectable: ^2.6.0
+  get_it: ^9.1.1
+  fpdart: ^1.2.0
+  freezed_annotation: ^3.0.0
+  json_annotation: ^4.9.0
+  dio: ^5.9.2
+  commons_infra:
+    path: ../../commons/infra
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  build_runner: ^2.11.0
+  injectable_generator: ^2.12.1
+  freezed: ^3.0.0
+  json_serializable: ^6.8.0
+  mocktail: ^1.0.4

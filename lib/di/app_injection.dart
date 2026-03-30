@@ -5,12 +5,14 @@ import 'package:commons_user/di/injection.dart';
 import 'package:feature_account_validation/di/injection.dart';
 import 'package:feature_initialization/di/injection.dart';
 import 'package:feature_splash/di/injection.dart';
+import 'package:feature_verification/di/injection.dart';
 import 'package:injectable/injectable.dart';
 
 @InjectableInit(initializerName: 'initGetIt', preferRelativeImports: true)
 Future<void> configureAppDependencies() async {
   await configureObservabilityDependencies();
   await configureInfraDependencies();
+  await configureVerificationDependencies();
   await configureUserDependencies();
   await configureSecurityDependencies();
   await configureSplashDependencies();

@@ -34,6 +34,8 @@ dependencies:
     path: packages/features/initialization
   feature_account_validation:
     path: packages/features/account_validation
+  feature_verification:
+    path: packages/features/verification
   flutter_bloc: ^9.1.1
   injectable: ^2.6.0
   get_it: ^9.1.1
