@@ -36,7 +36,11 @@
       "Bash(cp /Users/igorlopesfaria/workspace_mobile/exame_da_mama/packages/design_system/media/lib/components/image/* /Users/igorlopesfaria/workspace_mobile/exame_da_mama/packages/design_system/flora/lib/components/media/image/)",
       "Bash(cp /Users/igorlopesfaria/workspace_mobile/exame_da_mama/packages/design_system/media/lib/components/icon/* /Users/igorlopesfaria/workspace_mobile/exame_da_mama/packages/design_system/flora/lib/components/media/icon/)",
       "Bash(cp /Users/igorlopesfaria/workspace_mobile/exame_da_mama/packages/design_system/media/lib/components/animation/* /Users/igorlopesfaria/workspace_mobile/exame_da_mama/packages/design_system/flora/lib/components/media/animation/)",
-      "Bash(python3:*)"
+      "Bash(python3:*)",
+      "Bash(flutter devices:*)",
+      "Bash(flutter run:*)",
+      "Bash(sed -i '' 's/PRODUCT_BUNDLE_IDENTIFIER = com\\\\.example\\\\.examesDaMamaApp;/PRODUCT_BUNDLE_IDENTIFIER = br.com.examesdamama;/g' /Users/igorlopesfaria/workspace_mobile/exame_da_mama/ios/Runner.xcodeproj/project.pbxproj)",
+      "Bash(sed -i '' 's/PRODUCT_BUNDLE_IDENTIFIER = com\\\\.example\\\\.examesDaMamaApp\\\\.RunnerTests;/PRODUCT_BUNDLE_IDENTIFIER = br.com.examesdamama.RunnerTests;/g' /Users/igorlopesfaria/workspace_mobile/exame_da_mama/ios/Runner.xcodeproj/project.pbxproj)"
     ]
   }
 }

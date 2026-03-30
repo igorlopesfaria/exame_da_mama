@@ -17,4 +17,6 @@ abstract final class FloraIconAssets {
 abstract final class FloraImageAssets {
   static const String sampleImage =
       'packages/flora/assets/images/sample_image.png';
+  static const String imgInitialization =
+      'packages/flora/assets/images/im_initialization.png';
 }

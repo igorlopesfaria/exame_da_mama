@@ -1,4 +1,4 @@
-package com.example.exames_da_mama_app
+package br.com.examesdamama
 
 import io.flutter.embedding.android.FlutterActivity
 
