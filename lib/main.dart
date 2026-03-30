@@ -15,6 +15,7 @@ void main() async {
   } catch (_) {
     app = Firebase.app();
   }
+  AppEnvironment.validate();
   debugPrint('[App] Environment: ${AppEnvironment.name} | baseUrl: ${AppEnvironment.baseUrl}');
   debugPrint('[Firebase] Connected ✓ — project: ${app.options.projectId}');
   await SystemChrome.setPreferredOrientations([
