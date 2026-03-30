@@ -70,6 +70,20 @@ void main() {
       expect(() => client.get('/test'), throwsA(isA<ParseException>()));
     });
 
+    test('logs error when ParseException is thrown', () async {
+      when(() => mockDio.get<dynamic>(any(), queryParameters: any(named: 'queryParameters')))
+          .thenAnswer((_) async => Response(requestOptions: requestOptions, data: [1, 2, 3]));
+
+      await expectLater(() => client.get('/test'), throwsA(isA<ParseException>()));
+
+      verify(() => mockLogger.error(
+        'http.request.failed',
+        throwable: any(named: 'throwable'),
+        attributes: any(named: 'attributes'),
+        stackTrace: any(named: 'stackTrace'),
+      )).called(1);
+    });
+
     test('throws ParseException when response data is a string', () {
       when(() => mockDio.get<dynamic>(any(), queryParameters: any(named: 'queryParameters')))
           .thenAnswer((_) async => Response(requestOptions: requestOptions, data: 'plain string'));

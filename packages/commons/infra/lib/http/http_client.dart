@@ -53,7 +53,14 @@ class HttpClient implements IHttpClient {
       );
       throw exception;
     } catch (e) {
-      if (e is AppException) rethrow;
+      if (e is AppException) {
+        _observability.logger.error(
+          'http.request.failed',
+          throwable: e,
+          attributes: {'path': path, 'method': method},
+        );
+        rethrow;
+      }
       final exception = ServerException(message: e.toString());
       _observability.logger.error(
         'http.request.failed',
