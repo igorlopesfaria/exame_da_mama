@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flora/components/inputs/code/flora_text_input_code_attributes.dart';
 import 'package:flora/components/inputs/code/flora_text_input_code_style.dart';
+import 'package:flora/components/text/flora_text.dart';
+import 'package:flora/components/text/flora_text_attributes.dart';
 import 'package:flora/core/tokens/flora_spacing.dart';
 
 class FloraTextInputCode extends StatefulWidget {
@@ -132,7 +134,7 @@ class _FloraTextInputCodeState extends State<FloraTextInputCode> {
           const SizedBox(height: FloraSpacing.s1),
           Padding(
             padding: const EdgeInsets.only(left: FloraSpacing.s4),
-            child: Text(attrs.errorText!, style: style.errorTextStyle),
+            child: FloraText.bodySmall(attrs.errorText!, color: FloraTextColor.error),
           ),
         ],
       ],

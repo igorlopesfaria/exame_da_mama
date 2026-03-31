@@ -12,14 +12,12 @@ class FloraTextInputCodeStyleData {
     required this.focusedBoxDecoration,
     required this.errorBoxDecoration,
     required this.textStyle,
-    required this.errorTextStyle,
   });
 
   final BoxDecoration boxDecoration;
   final BoxDecoration focusedBoxDecoration;
   final BoxDecoration errorBoxDecoration;
   final TextStyle textStyle;
-  final TextStyle errorTextStyle;
 }
 
 abstract final class FloraTextInputCodeStyle {
@@ -75,7 +73,6 @@ abstract final class FloraTextInputCodeStyle {
       focusedBoxDecoration: focused,
       errorBoxDecoration: error,
       textStyle: tt.titleLarge!.copyWith(color: cs.onSurface),
-      errorTextStyle: tt.bodySmall!.copyWith(color: cs.error),
     );
   }
 }
