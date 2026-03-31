@@ -1,3 +1,4 @@
+import 'package:commons_observability/commons_observability.dart';
 import 'package:dio/dio.dart';
 import 'package:feature_otp/data/datasources/otp_remote_data_source.dart';
 import 'package:feature_otp/domain/failures/otp_failure.dart';
@@ -8,17 +9,29 @@ import 'package:injectable/injectable.dart';
 
 @LazySingleton(as: OtpRepository)
 class OtpRepositoryImpl implements OtpRepository {
-  const OtpRepositoryImpl(this._dataSource);
+  const OtpRepositoryImpl(this._dataSource, this._observability);
 
   final OtpRemoteDataSource _dataSource;
+  final IObservability _observability;
 
   @override
   Future<Either<OtpFailure, Unit>> sendCode(OtpChannel channel, String value) async {
     try {
       await _dataSource.sendCode(channel, value);
       return right(unit);
-    } on DioException catch (e) {
-      return left(_mapError(e));
+    } on DioException catch (e, st) {
+      final failure = _mapError(e);
+      _observability.logger.error(
+        'otp.repository.send_code.http_error',
+        attributes: {
+          'channel': channel.name,
+          'statusCode': e.response?.statusCode,
+          'failure': failure.runtimeType.toString(),
+        },
+        throwable: e,
+        stackTrace: st,
+      );
+      return left(failure);
     }
   }
 
@@ -31,8 +44,19 @@ class OtpRepositoryImpl implements OtpRepository {
     try {
       final response = await _dataSource.verifyCode(channel, value: value, code: code);
       return right(response.verificationToken);
-    } on DioException catch (e) {
-      return left(_mapError(e));
+    } on DioException catch (e, st) {
+      final failure = _mapError(e);
+      _observability.logger.error(
+        'otp.repository.verify_code.http_error',
+        attributes: {
+          'channel': channel.name,
+          'statusCode': e.response?.statusCode,
+          'failure': failure.runtimeType.toString(),
+        },
+        throwable: e,
+        stackTrace: st,
+      );
+      return left(failure);
     }
   }
 

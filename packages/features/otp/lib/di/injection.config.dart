@@ -9,6 +9,7 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'package:commons_observability/commons_observability.dart' as _i731;
 import 'package:dio/dio.dart' as _i361;
 import 'package:feature_otp/data/datasources/otp_remote_data_source.dart'
     as _i1068;
@@ -35,13 +36,22 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i369.OtpRemoteDataSourceImpl(gh<_i361.Dio>()),
     );
     gh.lazySingleton<_i174.OtpRepository>(
-      () => _i352.OtpRepositoryImpl(gh<_i1068.OtpRemoteDataSource>()),
+      () => _i352.OtpRepositoryImpl(
+        gh<_i1068.OtpRemoteDataSource>(),
+        gh<_i731.IObservability>(),
+      ),
     );
     gh.lazySingleton<_i273.SendOtpCodeUseCase>(
-      () => _i273.SendOtpCodeUseCase(gh<_i174.OtpRepository>()),
+      () => _i273.SendOtpCodeUseCase(
+        gh<_i174.OtpRepository>(),
+        gh<_i731.IObservability>(),
+      ),
     );
     gh.lazySingleton<_i388.VerifyOtpCodeUseCase>(
-      () => _i388.VerifyOtpCodeUseCase(gh<_i174.OtpRepository>()),
+      () => _i388.VerifyOtpCodeUseCase(
+        gh<_i174.OtpRepository>(),
+        gh<_i731.IObservability>(),
+      ),
     );
     return this;
   }

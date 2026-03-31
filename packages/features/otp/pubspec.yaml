@@ -16,6 +16,8 @@ dependencies:
   dio: ^5.9.2
   commons_infra:
     path: ../../commons/infra
+  commons_observability:
+    path: ../../commons/observability
 
 dev_dependencies:
   flutter_test:
