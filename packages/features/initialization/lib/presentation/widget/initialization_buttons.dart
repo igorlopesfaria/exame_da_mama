@@ -57,8 +57,8 @@ class InitializationButtons extends StatelessWidget {
               final token = await FloraBottomSheet.show(
                 context,
                 child: OtpScreen(
-                  channel: OtpChannel.email,       // or OtpChannel.phone
-                  contact: 'user@example.com',     // email or phone number
+                  channel: OtpChannel.phone,       // or OtpChannel.phone
+                  contact: '+5511976800990',     // email or phone number
                   onSuccess: (token) {
                     // called immediately on success, before the sheet closes
                     // use token here if you need it synchronously

@@ -105,9 +105,9 @@ class _OtpView extends StatelessWidget {
 
           return Padding(
             padding: EdgeInsets.fromLTRB(
+              FloraSpacing.s2,
               FloraSpacing.s4,
-              FloraSpacing.s8,
-              FloraSpacing.s4,
+              FloraSpacing.s2,
               FloraSpacing.s4
             ),
             child: Column(
@@ -122,7 +122,7 @@ class _OtpView extends StatelessWidget {
                     errorText: invalidCodeError,
                   ),
                 ),
-                const SizedBox(height: FloraSpacing.s8),
+                const SizedBox(height: FloraSpacing.s4),
                 OtpActionsWidget(
                   isCodeComplete: state.isCodeComplete,
                   isVerifying: state is OtpVerifying,

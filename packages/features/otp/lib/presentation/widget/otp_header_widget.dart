@@ -22,7 +22,7 @@ class OtpHeaderWidget extends StatelessWidget {
       children: [
         FloraText.titleLarge(
             l10n.title,
-          color: FloraTextColor.primary,
+            color: FloraTextColor.primary,
         ),
         const SizedBox(height: FloraSpacing.s1),
         FloraText.bodyMedium(
