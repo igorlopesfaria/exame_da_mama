@@ -89,11 +89,11 @@ class _OtpView extends StatelessWidget {
 
     return BlocListener<OtpCubit, OtpState>(
       listener: (context, state) {
-        switch (state.verifyStatus) {
-          case OtpVerifySuccess(:final token):
+        switch (state.verifyCodeState) {
+          case OtpVerifyCodeSuccess(:final token):
             onSuccess?.call(token);
             AppNavigator.pop(context, token);
-          case OtpVerifyError(:final failure):
+          case OtpVerifyCodeError(:final failure):
             if (failure is! InvalidCode) {
               _showToast(context,
                 message: _failureMessage(context, failure),
@@ -104,14 +104,14 @@ class _OtpView extends StatelessWidget {
           default:
             break;
         }
-        switch (state.resendStatus) {
-          case OtpResendError(:final failure):
+        switch (state.resendCodeState) {
+          case OtpResendCodeError(:final failure):
             _showToast(context,
               message: _failureMessage(context, failure),
               variant: FloraToastVariant.error,
             );
             cubit.resetToIdle();
-          case OtpResendSuccess():
+          case OtpResendCodeSuccess():
             _showToast(context,
               message: OtpLocalizations.of(context).resendSuccess,
               variant: FloraToastVariant.success,
@@ -124,8 +124,8 @@ class _OtpView extends StatelessWidget {
       child: BlocBuilder<OtpCubit, OtpState>(
         builder: (context, state) {
           final invalidCodeError =
-              state.verifyStatus is OtpVerifyError &&
-                      (state.verifyStatus as OtpVerifyError).failure
+              state.verifyCodeState is OtpVerifyCodeError &&
+                      (state.verifyCodeState as OtpVerifyCodeError).failure
                           is InvalidCode
                   ? OtpLocalizations.of(context).errorInvalidCode
                   : null;
@@ -152,8 +152,8 @@ class _OtpView extends StatelessWidget {
                 const SizedBox(height: FloraSpacing.s4),
                 OtpActionsWidget(
                   isCodeComplete: state.isCodeComplete,
-                  isVerifying: state.verifyStatus is OtpVerifying,
-                  isResending: state.resendStatus is OtpResending,
+                  isVerifying: state.verifyCodeState is OtpVerifyCodeLoading,
+                  isResending: state.resendCodeState is OtpResendCodeLoading,
                   countdownSeconds: state.countdownSeconds,
                   onValidate: cubit.verifyCode,
                   onResend: cubit.resendCode,

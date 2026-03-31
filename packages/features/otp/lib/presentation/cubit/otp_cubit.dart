@@ -44,35 +44,37 @@ class OtpCubit extends Cubit<OtpState> {
 
   void onCodeChanged(String code) {
     _currentCode = code;
-    if (!state.isLoading) {
+    final isLoading = state.verifyCodeState is OtpVerifyCodeLoading ||
+        state.resendCodeState is OtpResendCodeLoading;
+    if (!isLoading) {
       emit(state.copyWith(
         isCodeComplete: code.length == 5,
-        verifyStatus: const OtpVerifyIdle(),
+        verifyCodeState: const OtpVerifyCodeIdle(),
       ));
     }
   }
 
   Future<void> verifyCode() async {
-    emit(state.copyWith(verifyStatus: const OtpVerifying()));
+    emit(state.copyWith(verifyCodeState: const OtpVerifyCodeLoading()));
     final result =
         await _verifyOtp(_channel, value: _contact, code: _currentCode);
     result.fold(
       (failure) =>
-          emit(state.copyWith(verifyStatus: OtpVerifyError(failure))),
+          emit(state.copyWith(verifyCodeState: OtpVerifyCodeError(failure))),
       (token) =>
-          emit(state.copyWith(verifyStatus: OtpVerifySuccess(token))),
+          emit(state.copyWith(verifyCodeState: OtpVerifyCodeSuccess(token))),
     );
   }
 
   Future<void> resendCode() async {
-    emit(state.copyWith(resendStatus: const OtpResending()));
+    emit(state.copyWith(resendCodeState: const OtpResendCodeLoading()));
     final result = await _sendOtp(_channel, _contact);
     result.fold(
       (failure) =>
-          emit(state.copyWith(resendStatus: OtpResendError(failure))),
+          emit(state.copyWith(resendCodeState: OtpResendCodeError(failure))),
       (nextRequestIn) {
         emit(state.copyWith(
-          resendStatus: const OtpResendSuccess(),
+          resendCodeState: const OtpResendCodeSuccess(),
           countdownSeconds: nextRequestIn,
         ));
         _startCountdown(nextRequestIn);
@@ -82,8 +84,8 @@ class OtpCubit extends Cubit<OtpState> {
 
   void resetToIdle() {
     emit(state.copyWith(
-      verifyStatus: const OtpVerifyIdle(),
-      resendStatus: const OtpResendIdle(),
+      verifyCodeState: const OtpVerifyCodeIdle(),
+      resendCodeState: const OtpResendCodeIdle(),
       isCodeComplete: _currentCode.length == 5,
     ));
   }

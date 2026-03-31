@@ -64,12 +64,12 @@ void main() {
   // ── init ───────────────────────────────────────────────────────────────────
 
   group('init', () {
-    test('sets state to OtpState with provided countdownSeconds', () {
+    test('sets state with provided countdownSeconds', () {
       cubit.init(tChannel, tContact, 30);
 
       expect(cubit.state.countdownSeconds, 30);
-      expect(cubit.state.verifyStatus, isA<OtpVerifyIdle>());
-      expect(cubit.state.resendStatus, isA<OtpResendIdle>());
+      expect(cubit.state.verifyCodeState, isA<OtpVerifyCodeIdle>());
+      expect(cubit.state.resendCodeState, isA<OtpResendCodeIdle>());
     });
 
     test('sets countdownSeconds to 0 when 0 provided', () {
@@ -156,7 +156,8 @@ void main() {
       await verifyFuture;
 
       expect(
-        emitted.any((s) => s.verifyStatus is OtpVerifying && !s.isCodeComplete),
+        emitted.any((s) =>
+            s.verifyCodeState is OtpVerifyCodeLoading && !s.isCodeComplete),
         isFalse,
       );
     });
@@ -170,38 +171,41 @@ void main() {
       cubit.onCodeChanged(tCode);
     });
 
-    test('emits OtpVerifying then OtpVerifySuccess on success', () async {
+    test('emits OtpVerifyCodeLoading then OtpVerifyCodeSuccess on success', () async {
       stubVerifySuccess();
 
       final states = await captureStates(2, cubit.verifyCode);
 
-      expect(states[0].verifyStatus, isA<OtpVerifying>());
-      expect(states[1].verifyStatus, isA<OtpVerifySuccess>());
-      expect((states[1].verifyStatus as OtpVerifySuccess).token, tToken);
+      expect(states[0].verifyCodeState, isA<OtpVerifyCodeLoading>());
+      expect(states[1].verifyCodeState, isA<OtpVerifyCodeSuccess>());
+      expect((states[1].verifyCodeState as OtpVerifyCodeSuccess).token, tToken);
     });
 
-    test('emits OtpVerifying then OtpVerifyError(InvalidCode)', () async {
+    test('emits OtpVerifyCodeLoading then OtpVerifyCodeError(InvalidCode)', () async {
       stubVerifyFailure(const InvalidCode());
 
       final states = await captureStates(2, cubit.verifyCode);
 
-      expect(states[0].verifyStatus, isA<OtpVerifying>());
-      expect(states[1].verifyStatus, isA<OtpVerifyError>());
-      expect((states[1].verifyStatus as OtpVerifyError).failure, isA<InvalidCode>());
+      expect(states[0].verifyCodeState, isA<OtpVerifyCodeLoading>());
+      expect(states[1].verifyCodeState, isA<OtpVerifyCodeError>());
+      expect(
+        (states[1].verifyCodeState as OtpVerifyCodeError).failure,
+        isA<InvalidCode>(),
+      );
     });
 
-    test('emits OtpVerifyError(TooManyAttempts) on TooManyAttempts failure', () async {
+    test('emits OtpVerifyCodeError(TooManyAttempts) on TooManyAttempts failure', () async {
       stubVerifyFailure(const TooManyAttempts());
 
       final states = await captureStates(2, cubit.verifyCode);
 
       expect(
-        (states[1].verifyStatus as OtpVerifyError).failure,
+        (states[1].verifyCodeState as OtpVerifyCodeError).failure,
         isA<TooManyAttempts>(),
       );
     });
 
-    test('preserves countdownSeconds across verifying and error states', () async {
+    test('preserves countdownSeconds across loading and error states', () async {
       cubit.init(tChannel, tContact, 30);
       cubit.onCodeChanged(tCode);
       stubVerifyFailure(const NetworkFailure());
@@ -230,24 +234,24 @@ void main() {
   group('resendCode', () {
     setUp(() => cubit.init(tChannel, tContact, 0));
 
-    test('emits OtpResending then OtpResendSuccess with nextRequestIn', () async {
+    test('emits OtpResendCodeLoading then OtpResendCodeSuccess with nextRequestIn', () async {
       stubSendSuccess(45);
 
       final states = await captureStates(2, cubit.resendCode);
 
-      expect(states[0].resendStatus, isA<OtpResending>());
-      expect(states[1].resendStatus, isA<OtpResendSuccess>());
+      expect(states[0].resendCodeState, isA<OtpResendCodeLoading>());
+      expect(states[1].resendCodeState, isA<OtpResendCodeSuccess>());
       expect(states[1].countdownSeconds, 45);
     });
 
-    test('emits OtpResendError on failure', () async {
+    test('emits OtpResendCodeError on failure', () async {
       stubSendFailure(const NetworkFailure());
 
       final states = await captureStates(2, cubit.resendCode);
 
-      expect(states[1].resendStatus, isA<OtpResendError>());
+      expect(states[1].resendCodeState, isA<OtpResendCodeError>());
       expect(
-        (states[1].resendStatus as OtpResendError).failure,
+        (states[1].resendCodeState as OtpResendCodeError).failure,
         isA<NetworkFailure>(),
       );
     });
@@ -271,13 +275,13 @@ void main() {
   // ── resetToIdle ────────────────────────────────────────────────────────────
 
   group('resetToIdle', () {
-    test('resets verifyStatus and resendStatus to idle, preserves countdownSeconds', () {
+    test('resets verifyCodeState and resendCodeState to idle, preserves countdownSeconds', () {
       fakeAsync((fake) {
         cubit.init(tChannel, tContact, 20);
         cubit.resetToIdle();
 
-        expect(cubit.state.verifyStatus, isA<OtpVerifyIdle>());
-        expect(cubit.state.resendStatus, isA<OtpResendIdle>());
+        expect(cubit.state.verifyCodeState, isA<OtpVerifyCodeIdle>());
+        expect(cubit.state.resendCodeState, isA<OtpResendCodeIdle>());
         expect(cubit.state.countdownSeconds, 20);
       });
     });
