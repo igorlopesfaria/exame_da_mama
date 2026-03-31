@@ -9,8 +9,8 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'package:commons_infra/http/i_http_client.dart' as _i285;
 import 'package:commons_observability/commons_observability.dart' as _i731;
-import 'package:dio/dio.dart' as _i361;
 import 'package:feature_otp/data/datasources/otp_remote_data_source.dart'
     as _i1068;
 import 'package:feature_otp/data/datasources/otp_remote_data_source_impl.dart'
@@ -33,7 +33,7 @@ extension GetItInjectableX on _i174.GetIt {
   }) {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
     gh.lazySingleton<_i1068.OtpRemoteDataSource>(
-      () => _i369.OtpRemoteDataSourceImpl(gh<_i361.Dio>()),
+      () => _i369.OtpRemoteDataSourceImpl(gh<_i285.IHttpClient>()),
     );
     gh.lazySingleton<_i174.OtpRepository>(
       () => _i352.OtpRepositoryImpl(gh<_i1068.OtpRemoteDataSource>()),

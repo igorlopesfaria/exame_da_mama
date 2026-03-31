@@ -1,27 +1,14 @@
-import 'package:dio/dio.dart';
+import 'package:commons_infra/exceptions/app_exceptions.dart';
+import 'package:commons_infra/failures/app_failures.dart';
 import 'package:feature_otp/data/datasources/otp_remote_data_source.dart';
 import 'package:feature_otp/data/models/otp_code_response.dart';
 import 'package:feature_otp/data/repositories/otp_repository_impl.dart';
-import 'package:feature_otp/domain/failures/otp_failure.dart';
 import 'package:feature_otp/domain/model/otp_channel.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockOtpRemoteDataSource extends Mock implements OtpRemoteDataSource {}
-
-DioException _dioWithResponse(String errorCode) => DioException(
-      requestOptions: RequestOptions(path: ''),
-      response: Response(
-        requestOptions: RequestOptions(path: ''),
-        data: {'error': errorCode},
-        statusCode: 400,
-      ),
-    );
-
-DioException _dioNoResponse() => DioException(
-      requestOptions: RequestOptions(path: ''),
-    );
 
 void main() {
   late MockOtpRemoteDataSource mockDataSource;
@@ -53,25 +40,26 @@ void main() {
       verify(() => mockDataSource.sendCode(OtpChannel.phone, '+5511999999999')).called(1);
     });
 
-    test('returns Left(ServerError) when DioException has no response', () async {
-      when(() => mockDataSource.sendCode(any(), any())).thenThrow(_dioNoResponse());
+    test('returns Left(NetworkFailure) on NetworkException', () async {
+      when(() => mockDataSource.sendCode(any(), any()))
+          .thenThrow(const NetworkException());
 
       final result = await repository.sendCode(OtpChannel.email, 'user@test.com');
 
       result.fold(
-        (f) => expect(f, isA<ServerError>()),
+        (f) => expect(f, isA<NetworkFailure>()),
         (_) => fail('expected Left'),
       );
     });
 
-    test('returns Left(ServerError) on unknown API error', () async {
+    test('returns Left(ServerFailure) on ServerException', () async {
       when(() => mockDataSource.sendCode(any(), any()))
-          .thenThrow(_dioWithResponse('UNKNOWN_ERROR'));
+          .thenThrow(const ServerException(message: 'Internal error'));
 
       final result = await repository.sendCode(OtpChannel.email, 'user@test.com');
 
       result.fold(
-        (f) => expect(f, isA<ServerError>()),
+        (f) => expect(f, isA<ServerFailure>()),
         (_) => fail('expected Left'),
       );
     });
@@ -96,9 +84,25 @@ void main() {
       );
     });
 
-    test('returns Left(InvalidCode) on INVALID_CODE error', () async {
+    test('returns Left(NetworkFailure) on NetworkException', () async {
       when(() => mockDataSource.verifyCode(any(), value: any(named: 'value'), code: any(named: 'code')))
-          .thenThrow(_dioWithResponse('INVALID_CODE'));
+          .thenThrow(const NetworkException());
+
+      final result = await repository.verifyCode(
+        OtpChannel.email,
+        value: 'user@test.com',
+        code: '123456',
+      );
+
+      result.fold(
+        (f) => expect(f, isA<NetworkFailure>()),
+        (_) => fail('expected Left'),
+      );
+    });
+
+    test('returns Left(ServerFailure) on ServerException', () async {
+      when(() => mockDataSource.verifyCode(any(), value: any(named: 'value'), code: any(named: 'code')))
+          .thenThrow(const ServerException(message: 'Bad request'));
 
       final result = await repository.verifyCode(
         OtpChannel.email,
@@ -107,14 +111,14 @@ void main() {
       );
 
       result.fold(
-        (f) => expect(f, isA<InvalidCode>()),
+        (f) => expect(f, isA<ServerFailure>()),
         (_) => fail('expected Left'),
       );
     });
 
-    test('returns Left(ExpiredCode) on EXPIRED_CODE error', () async {
+    test('returns Left(ParseFailure) on ParseException', () async {
       when(() => mockDataSource.verifyCode(any(), value: any(named: 'value'), code: any(named: 'code')))
-          .thenThrow(_dioWithResponse('EXPIRED_CODE'));
+          .thenThrow(const ParseException());
 
       final result = await repository.verifyCode(
         OtpChannel.email,
@@ -123,55 +127,7 @@ void main() {
       );
 
       result.fold(
-        (f) => expect(f, isA<ExpiredCode>()),
-        (_) => fail('expected Left'),
-      );
-    });
-
-    test('returns Left(TooManyAttempts) on TOO_MANY_ATTEMPTS error', () async {
-      when(() => mockDataSource.verifyCode(any(), value: any(named: 'value'), code: any(named: 'code')))
-          .thenThrow(_dioWithResponse('TOO_MANY_ATTEMPTS'));
-
-      final result = await repository.verifyCode(
-        OtpChannel.email,
-        value: 'user@test.com',
-        code: '123456',
-      );
-
-      result.fold(
-        (f) => expect(f, isA<TooManyAttempts>()),
-        (_) => fail('expected Left'),
-      );
-    });
-
-    test('returns Left(ServerError) when DioException has no response', () async {
-      when(() => mockDataSource.verifyCode(any(), value: any(named: 'value'), code: any(named: 'code')))
-          .thenThrow(_dioNoResponse());
-
-      final result = await repository.verifyCode(
-        OtpChannel.phone,
-        value: '+5511999999999',
-        code: '123456',
-      );
-
-      result.fold(
-        (f) => expect(f, isA<ServerError>()),
-        (_) => fail('expected Left'),
-      );
-    });
-
-    test('returns Left(ServerError) on unknown API error', () async {
-      when(() => mockDataSource.verifyCode(any(), value: any(named: 'value'), code: any(named: 'code')))
-          .thenThrow(_dioWithResponse('UNKNOWN_ERROR'));
-
-      final result = await repository.verifyCode(
-        OtpChannel.email,
-        value: 'user@test.com',
-        code: '123456',
-      );
-
-      result.fold(
-        (f) => expect(f, isA<ServerError>()),
+        (f) => expect(f, isA<ParseFailure>()),
         (_) => fail('expected Left'),
       );
     });

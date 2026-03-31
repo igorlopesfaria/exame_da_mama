@@ -1,5 +1,5 @@
+import 'package:commons_infra/failures/app_failures.dart';
 import 'package:commons_observability/commons_observability.dart';
-import 'package:feature_otp/domain/failures/otp_failure.dart';
 import 'package:feature_otp/domain/model/otp_channel.dart';
 import 'package:feature_otp/domain/repositories/otp_repository.dart';
 import 'package:feature_otp/domain/usecases/verify_otp_code_use_case.dart';
@@ -59,38 +59,14 @@ void main() {
       )).called(1);
     });
 
-    test('returns Left(InvalidCode) on InvalidCode failure', () async {
+    test('returns Left(failure) on repository failure', () async {
       when(() => mockRepository.verifyCode(any(), value: any(named: 'value'), code: any(named: 'code')))
-          .thenAnswer((_) async => left(const InvalidCode()));
+          .thenAnswer((_) async => left(const ServerFailure('error')));
 
       final result = await useCase.call(OtpChannel.email, value: 'user@test.com', code: '000000');
 
       result.fold(
-        (f) => expect(f, isA<InvalidCode>()),
-        (_) => fail('expected Left'),
-      );
-    });
-
-    test('returns Left(ExpiredCode) on ExpiredCode failure', () async {
-      when(() => mockRepository.verifyCode(any(), value: any(named: 'value'), code: any(named: 'code')))
-          .thenAnswer((_) async => left(const ExpiredCode()));
-
-      final result = await useCase.call(OtpChannel.email, value: 'user@test.com', code: '123456');
-
-      result.fold(
-        (f) => expect(f, isA<ExpiredCode>()),
-        (_) => fail('expected Left'),
-      );
-    });
-
-    test('returns Left(TooManyAttempts) on TooManyAttempts failure', () async {
-      when(() => mockRepository.verifyCode(any(), value: any(named: 'value'), code: any(named: 'code')))
-          .thenAnswer((_) async => left(const TooManyAttempts()));
-
-      final result = await useCase.call(OtpChannel.email, value: 'user@test.com', code: '123456');
-
-      result.fold(
-        (f) => expect(f, isA<TooManyAttempts>()),
+        (f) => expect(f, isA<ServerFailure>()),
         (_) => fail('expected Left'),
       );
     });
@@ -109,13 +85,13 @@ void main() {
 
     test('logs error with channel and failureType on Left', () async {
       when(() => mockRepository.verifyCode(any(), value: any(named: 'value'), code: any(named: 'code')))
-          .thenAnswer((_) async => left(const InvalidCode()));
+          .thenAnswer((_) async => left(const NetworkFailure()));
 
       await useCase.call(OtpChannel.phone, value: '+5511999999999', code: '000000');
 
       verify(() => mockLogger.error(
         'otp.verify_code.failed',
-        attributes: {'channel': 'phone', 'failureType': 'InvalidCode'},
+        attributes: {'channel': 'phone', 'failureType': 'NetworkFailure'},
       )).called(1);
     });
   });

@@ -1,4 +1,4 @@
-import 'package:dio/dio.dart';
+import 'package:commons_infra/http/i_http_client.dart';
 import 'package:feature_otp/data/datasources/otp_remote_data_source.dart';
 import 'package:feature_otp/data/models/otp_code_response.dart';
 import 'package:feature_otp/domain/model/otp_channel.dart';
@@ -12,13 +12,13 @@ extension _OtpChannelPaths on OtpChannel {
 
 @LazySingleton(as: OtpRemoteDataSource)
 class OtpRemoteDataSourceImpl implements OtpRemoteDataSource {
-  const OtpRemoteDataSourceImpl(this._dio);
+  const OtpRemoteDataSourceImpl(this._httpClient);
 
-  final Dio _dio;
+  final IHttpClient _httpClient;
 
   @override
   Future<void> sendCode(OtpChannel channel, String value) async {
-    await _dio.post(channel._sendPath, data: {channel._key: value});
+    await _httpClient.post(channel._sendPath, data: {channel._key: value});
   }
 
   @override
@@ -27,10 +27,10 @@ class OtpRemoteDataSourceImpl implements OtpRemoteDataSource {
     required String value,
     required String code,
   }) async {
-    final response = await _dio.post(
+    final data = await _httpClient.post(
       channel._verifyPath,
       data: {channel._key: value, 'code': code},
     );
-    return OtpCodeResponse.fromJson(response.data as Map<String, dynamic>);
+    return OtpCodeResponse.fromJson(data);
   }
 }

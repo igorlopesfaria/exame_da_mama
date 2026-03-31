@@ -1,6 +1,6 @@
-import 'package:dio/dio.dart';
+import 'package:commons_infra/failures/app_failures.dart';
+import 'package:commons_infra/repository/base_repository.dart';
 import 'package:feature_otp/data/datasources/otp_remote_data_source.dart';
-import 'package:feature_otp/domain/failures/otp_failure.dart';
 import 'package:feature_otp/domain/model/otp_channel.dart';
 import 'package:feature_otp/domain/model/verification_token.dart';
 import 'package:feature_otp/domain/repositories/otp_repository.dart';
@@ -8,43 +8,25 @@ import 'package:fpdart/fpdart.dart';
 import 'package:injectable/injectable.dart';
 
 @LazySingleton(as: OtpRepository)
-class OtpRepositoryImpl implements OtpRepository {
+class OtpRepositoryImpl extends BaseRepository implements OtpRepository {
   const OtpRepositoryImpl(this._dataSource);
 
   final OtpRemoteDataSource _dataSource;
 
   @override
-  Future<Either<OtpFailure, Unit>> sendCode(OtpChannel channel, String value) async {
-    try {
-      await _dataSource.sendCode(channel, value);
-      return right(unit);
-    } on DioException catch (e) {
-      return left(_mapError(e));
-    }
-  }
+  Future<Either<Failure, Unit>> sendCode(OtpChannel channel, String value) =>
+      safeCall(() async {
+        await _dataSource.sendCode(channel, value);
+        return unit;
+      });
 
   @override
-  Future<Either<OtpFailure, VerificationToken>> verifyCode(
+  Future<Either<Failure, VerificationToken>> verifyCode(
     OtpChannel channel, {
     required String value,
     required String code,
-  }) async {
-    try {
-      final response = await _dataSource.verifyCode(channel, value: value, code: code);
-      return right(response.verificationToken);
-    } on DioException catch (e) {
-      return left(_mapError(e));
-    }
-  }
-
-  OtpFailure _mapError(DioException e) {
-    if (e.response == null) return const ServerError();
-    final error = e.response!.data?['error'] as String?;
-    return switch (error) {
-      'INVALID_CODE'      => const InvalidCode(),
-      'EXPIRED_CODE'      => const ExpiredCode(),
-      'TOO_MANY_ATTEMPTS' => const TooManyAttempts(),
-      _                   => const ServerError(),
-    };
-  }
+  }) =>
+      safeCall(() => _dataSource
+          .verifyCode(channel, value: value, code: code)
+          .then((r) => r.verificationToken));
 }

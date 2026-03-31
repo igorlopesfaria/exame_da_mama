@@ -1,5 +1,5 @@
+import 'package:commons_infra/failures/app_failures.dart';
 import 'package:commons_observability/commons_observability.dart';
-import 'package:feature_otp/domain/failures/otp_failure.dart';
 import 'package:feature_otp/domain/model/otp_channel.dart';
 import 'package:feature_otp/domain/repositories/otp_repository.dart';
 import 'package:feature_otp/domain/usecases/send_otp_code_use_case.dart';
@@ -52,12 +52,12 @@ void main() {
 
     test('returns Left(failure) on repository failure', () async {
       when(() => mockRepository.sendCode(any(), any()))
-          .thenAnswer((_) async => left(const ServerError()));
+          .thenAnswer((_) async => left(const ServerFailure('error')));
 
       final result = await useCase.call(OtpChannel.email, 'user@test.com');
 
       result.fold(
-        (f) => expect(f, isA<ServerError>()),
+        (f) => expect(f, isA<ServerFailure>()),
         (_) => fail('expected Left'),
       );
     });
@@ -76,7 +76,7 @@ void main() {
 
     test('logs error with channel on Left', () async {
       when(() => mockRepository.sendCode(any(), any()))
-          .thenAnswer((_) async => left(const ServerError()));
+          .thenAnswer((_) async => left(const ServerFailure('error')));
 
       await useCase.call(OtpChannel.phone, '+5511999999999');
 

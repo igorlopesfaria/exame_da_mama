@@ -1,5 +1,5 @@
+import 'package:commons_infra/failures/app_failures.dart';
 import 'package:commons_observability/commons_observability.dart';
-import 'package:feature_otp/domain/failures/otp_failure.dart';
 import 'package:feature_otp/domain/model/otp_channel.dart';
 import 'package:feature_otp/domain/repositories/otp_repository.dart';
 import 'package:fpdart/fpdart.dart';
@@ -12,7 +12,7 @@ class SendOtpCodeUseCase {
   final OtpRepository _repository;
   final IObservability _observability;
 
-  Future<Either<OtpFailure, Unit>> call(OtpChannel channel, String value) async {
+  Future<Either<Failure, Unit>> call(OtpChannel channel, String value) async {
     final result = await _repository.sendCode(channel, value);
     result.fold(
       (_) => _observability.logger.error(
