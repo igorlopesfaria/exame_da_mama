@@ -18,6 +18,7 @@ import 'package:flora_sample/switch/flora_switch_sample.dart';
 import 'package:flora_sample/text/flora_text_sample.dart';
 import 'package:flora_sample/text_field/flora_text_field_sample.dart';
 import 'package:flora_sample/toast/flora_toast_sample.dart';
+import 'package:flora_sample/bottom_sheet/flora_bottom_sheet_sample.dart';
 import 'package:flutter/material.dart';
 
 class SampleList extends StatelessWidget {
@@ -40,6 +41,7 @@ class SampleList extends StatelessWidget {
     _SampleItem(title: 'Feedback', subtitle: 'Empty, error, connection states', screen: FloraFeedbackSample()),
     _SampleItem(title: 'Text', subtitle: 'Display, headline, title, label, body scales', screen: FloraTextSample()),
     _SampleItem(title: 'Toast', subtitle: 'Info, success, warning, error variants', screen: FloraToastSample()),
+    _SampleItem(title: 'Bottom Sheet', subtitle: 'Drag handle, dismissible, scrollable content', screen: FloraBottomSheetSample()),
     _SampleItem(title: 'Image', subtitle: 'Asset, network, fit variants, border radius', screen: FloraImageSample()),
     _SampleItem(title: 'Icon', subtitle: 'Flutter icon, asset, colors, sizes', screen: FloraIconSample()),
     _SampleItem(title: 'Animation', subtitle: 'Lottie asset, repeat, reverse, fit variants', screen: FloraAnimationSample()),

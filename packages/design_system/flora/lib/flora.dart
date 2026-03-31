@@ -110,6 +110,11 @@ export 'package:flora/components/toast/flora_toast_attributes.dart';
 export 'package:flora/components/toast/flora_toast_style.dart';
 export 'package:flora/components/toast/flora_toast.dart';
 
+// Bottom Sheet
+export 'package:flora/components/modals/bottom_sheet/flora_bottom_sheet_attributes.dart';
+export 'package:flora/components/modals/bottom_sheet/flora_bottom_sheet_style.dart';
+export 'package:flora/components/modals/bottom_sheet/flora_bottom_sheet.dart';
+
 // Media — Assets
 export 'package:flora/components/media/flora_media_assets.dart';
 
