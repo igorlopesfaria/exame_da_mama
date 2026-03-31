@@ -59,6 +59,7 @@ class InitializationButtons extends StatelessWidget {
                 child: OtpScreen(
                   channel: OtpChannel.phone,       // or OtpChannel.phone
                   contact: '+5511976800990',     // email or phone number
+                  initialCountdownSeconds: 60,
                   onSuccess: (token) {
                     // called immediately on success, before the sheet closes
                     // use token here if you need it synchronously

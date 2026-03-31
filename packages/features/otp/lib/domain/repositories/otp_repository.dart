@@ -4,7 +4,7 @@ import 'package:feature_otp/domain/model/verification_token.dart';
 import 'package:fpdart/fpdart.dart';
 
 abstract interface class OtpRepository {
-  Future<Either<Failure, Unit>> sendCode(OtpChannel channel, String value);
+  Future<Either<Failure, int>> sendCode(OtpChannel channel, String value);
   Future<Either<Failure, VerificationToken>> verifyCode(
     OtpChannel channel, {
     required String value,

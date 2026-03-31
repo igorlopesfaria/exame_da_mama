@@ -1,0 +1,1 @@
+typedef OtpNextRequestIn = int;

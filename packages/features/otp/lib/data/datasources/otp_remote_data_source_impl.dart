@@ -1,6 +1,7 @@
 import 'package:commons_infra/http/i_http_client.dart';
 import 'package:feature_otp/data/datasources/otp_remote_data_source.dart';
-import 'package:feature_otp/data/models/otp_code_response.dart';
+import 'package:feature_otp/data/models/otp_send_code_response.dart';
+import 'package:feature_otp/data/models/otp_verify_code_response.dart';
 import 'package:feature_otp/domain/model/otp_channel.dart';
 import 'package:injectable/injectable.dart';
 
@@ -17,12 +18,13 @@ class OtpRemoteDataSourceImpl implements OtpRemoteDataSource {
   final IHttpClient _httpClient;
 
   @override
-  Future<void> sendCode(OtpChannel channel, String value) async {
-    await _httpClient.post(channel._sendPath, data: {channel._key: value});
+  Future<int> sendCode(OtpChannel channel, String value) async {
+    final data = await _httpClient.post(channel._sendPath, data: {channel._key: value});
+    return OtpSendCodeResponse.fromJson(data).otpNextRequestIn;
   }
 
   @override
-  Future<OtpCodeResponse> verifyCode(
+  Future<OtpVerifyCodeResponse> verifyCode(
     OtpChannel channel, {
     required String value,
     required String code,
@@ -31,6 +33,6 @@ class OtpRemoteDataSourceImpl implements OtpRemoteDataSource {
       channel._verifyPath,
       data: {channel._key: value, 'code': code},
     );
-    return OtpCodeResponse.fromJson(data);
+    return OtpVerifyCodeResponse.fromJson(data);
   }
 }

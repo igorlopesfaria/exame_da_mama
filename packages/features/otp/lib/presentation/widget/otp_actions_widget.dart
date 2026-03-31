@@ -8,6 +8,7 @@ class OtpActionsWidget extends StatelessWidget {
     required this.isCodeComplete,
     required this.isVerifying,
     required this.isResending,
+    required this.countdownSeconds,
     required this.onValidate,
     required this.onResend,
   });
@@ -15,6 +16,7 @@ class OtpActionsWidget extends StatelessWidget {
   final bool isCodeComplete;
   final bool isVerifying;
   final bool isResending;
+  final int countdownSeconds;
   final VoidCallback onValidate;
   final VoidCallback onResend;
 
@@ -26,13 +28,24 @@ class OtpActionsWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        FloraButton(
-          label: l10n.resendCode,
-          variant: FloraButtonVariant.text,
-          size: FloraButtonSize.large,
-          isLoading: isResending,
-          onPressed: isLoading ? null : onResend,
-        ),
+        if (countdownSeconds > 0)
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: FloraSpacing.s3),
+              child: FloraText.bodyMedium(
+                '${l10n.resendCode} (${countdownSeconds}s)',
+                color: FloraTextColor.secondary,
+              ),
+            ),
+          )
+        else
+          FloraButton(
+            label: l10n.resendCode,
+            variant: FloraButtonVariant.text,
+            size: FloraButtonSize.large,
+            isLoading: isResending,
+            onPressed: isLoading ? null : onResend,
+          ),
         const SizedBox(height: FloraSpacing.s2),
         FloraButton(
           label: l10n.validateCode,

@@ -1,7 +1,7 @@
 import 'package:commons_infra/exceptions/app_exceptions.dart';
 import 'package:commons_infra/failures/app_failures.dart';
 import 'package:feature_otp/data/datasources/otp_remote_data_source.dart';
-import 'package:feature_otp/data/models/otp_code_response.dart';
+import 'package:feature_otp/data/models/otp_verify_code_response.dart';
 import 'package:feature_otp/data/repositories/otp_repository_impl.dart';
 import 'package:feature_otp/domain/model/otp_channel.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -24,16 +24,20 @@ void main() {
   });
 
   group('OtpRepositoryImpl.sendCode', () {
-    test('returns Right(unit) on success', () async {
-      when(() => mockDataSource.sendCode(any(), any())).thenAnswer((_) async {});
+    const tNextRequestIn = 60;
+
+    test('returns Right(nextRequestIn) on success', () async {
+      when(() => mockDataSource.sendCode(any(), any()))
+          .thenAnswer((_) async => tNextRequestIn);
 
       final result = await repository.sendCode(OtpChannel.email, 'user@test.com');
 
-      expect(result, const Right(unit));
+      expect(result, right(tNextRequestIn));
     });
 
     test('delegates channel and value to data source', () async {
-      when(() => mockDataSource.sendCode(any(), any())).thenAnswer((_) async {});
+      when(() => mockDataSource.sendCode(any(), any()))
+          .thenAnswer((_) async => tNextRequestIn);
 
       await repository.sendCode(OtpChannel.phone, '+5511999999999');
 
@@ -70,7 +74,7 @@ void main() {
 
     test('returns Right(token) on success', () async {
       when(() => mockDataSource.verifyCode(any(), value: any(named: 'value'), code: any(named: 'code')))
-          .thenAnswer((_) async => const OtpCodeResponse(verificationToken: tToken));
+          .thenAnswer((_) async => const OtpVerifyCodeResponse(verificationToken: tToken));
 
       final result = await repository.verifyCode(
         OtpChannel.email,

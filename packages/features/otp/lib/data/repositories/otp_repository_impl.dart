@@ -14,11 +14,8 @@ class OtpRepositoryImpl extends BaseRepository implements OtpRepository {
   final OtpRemoteDataSource _dataSource;
 
   @override
-  Future<Either<Failure, Unit>> sendCode(OtpChannel channel, String value) =>
-      safeCall(() async {
-        await _dataSource.sendCode(channel, value);
-        return unit;
-      });
+  Future<Either<Failure, int>> sendCode(OtpChannel channel, String value) =>
+      safeCall(() => _dataSource.sendCode(channel, value));
 
   @override
   Future<Either<Failure, VerificationToken>> verifyCode(

@@ -1,69 +1,80 @@
 import 'package:commons_infra/failures/app_failures.dart';
 
-sealed class OtpState {
-  const OtpState();
+// ── Verify sub-status ──────────────────────────────────────────────────────
 
-  bool get isCodeComplete => false;
-  bool get isLoading => false;
+sealed class OtpVerifyStatus {
+  const OtpVerifyStatus();
 }
 
-class OtpIdle extends OtpState {
-  const OtpIdle({this.isCodeComplete = false});
-
-  @override
-  final bool isCodeComplete;
+class OtpVerifyIdle extends OtpVerifyStatus {
+  const OtpVerifyIdle();
 }
 
-class OtpVerifying extends OtpState {
-  const OtpVerifying({required this.isCodeComplete});
-
-  @override
-  final bool isCodeComplete;
-
-  @override
-  bool get isLoading => true;
+class OtpVerifying extends OtpVerifyStatus {
+  const OtpVerifying();
 }
 
-class OtpResending extends OtpState {
-  const OtpResending({required this.isCodeComplete});
-
-  @override
-  final bool isCodeComplete;
-
-  @override
-  bool get isLoading => true;
-}
-
-class OtpVerifyError extends OtpState {
-  const OtpVerifyError(this.failure, {required this.isCodeComplete});
-
-  final Failure failure;
-
-  @override
-  final bool isCodeComplete;
-}
-
-class OtpResendError extends OtpState {
-  const OtpResendError(this.failure, {required this.isCodeComplete});
-
-  final Failure failure;
-
-  @override
-  final bool isCodeComplete;
-}
-
-class OtpResendSuccess extends OtpState {
-  const OtpResendSuccess({required this.isCodeComplete});
-
-  @override
-  final bool isCodeComplete;
-}
-
-class OtpVerifySuccess extends OtpState {
+class OtpVerifySuccess extends OtpVerifyStatus {
   const OtpVerifySuccess(this.token);
-
   final String token;
+}
 
-  @override
-  bool get isCodeComplete => true;
+class OtpVerifyError extends OtpVerifyStatus {
+  const OtpVerifyError(this.failure);
+  final Failure failure;
+}
+
+// ── Resend sub-status ──────────────────────────────────────────────────────
+
+sealed class OtpResendStatus {
+  const OtpResendStatus();
+}
+
+class OtpResendIdle extends OtpResendStatus {
+  const OtpResendIdle();
+}
+
+class OtpResending extends OtpResendStatus {
+  const OtpResending();
+}
+
+class OtpResendSuccess extends OtpResendStatus {
+  const OtpResendSuccess();
+}
+
+class OtpResendError extends OtpResendStatus {
+  const OtpResendError(this.failure);
+  final Failure failure;
+}
+
+// ── Composite state ────────────────────────────────────────────────────────
+
+class OtpState {
+  const OtpState({
+    this.verifyStatus = const OtpVerifyIdle(),
+    this.resendStatus = const OtpResendIdle(),
+    this.countdownSeconds = 0,
+    this.isCodeComplete = false,
+  });
+
+  final OtpVerifyStatus verifyStatus;
+  final OtpResendStatus resendStatus;
+  final int countdownSeconds;
+  final bool isCodeComplete;
+
+  bool get isLoading =>
+      verifyStatus is OtpVerifying || resendStatus is OtpResending;
+
+  OtpState copyWith({
+    OtpVerifyStatus? verifyStatus,
+    OtpResendStatus? resendStatus,
+    int? countdownSeconds,
+    bool? isCodeComplete,
+  }) =>
+      OtpState(
+        verifyStatus: verifyStatus ?? this.verifyStatus,
+        resendStatus: resendStatus ?? this.resendStatus,
+        countdownSeconds: countdownSeconds ?? this.countdownSeconds,
+        isCodeComplete: isCodeComplete ?? this.isCodeComplete,
+      );
 }

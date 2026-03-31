@@ -2,6 +2,7 @@ import 'package:commons_infra/failures/app_failures.dart';
 import 'package:commons_observability/commons_observability.dart';
 import 'package:feature_otp/domain/failures/otp_failure.dart';
 import 'package:feature_otp/domain/model/otp_channel.dart';
+import 'package:feature_otp/domain/model/otp_next_request_in.dart';
 import 'package:feature_otp/domain/repositories/otp_repository.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:injectable/injectable.dart';
@@ -13,7 +14,7 @@ class SendOtpCodeUseCase {
   final OtpRepository _repository;
   final IObservability _observability;
 
-  Future<Either<Failure, Unit>> call(OtpChannel channel, String value) async {
+  Future<Either<Failure, OtpNextRequestIn>> call(OtpChannel channel, String value) async {
     final result = await _repository.sendCode(channel, value);
     return result.fold(
       (f) {
@@ -24,12 +25,12 @@ class SendOtpCodeUseCase {
         );
         return left(failure);
       },
-      (v) {
+      (nextRequestIn) {
         _observability.logger.info(
           'otp.send_code.success',
           attributes: {'channel': channel.name},
         );
-        return right(v);
+        return right(nextRequestIn);
       },
     );
   }

@@ -1,4 +1,5 @@
 import 'package:commons_infra/failures/app_failures.dart';
+import 'package:commons_navigation/commons_navigation.dart';
 import 'package:feature_otp/domain/failures/otp_failure.dart';
 import 'package:feature_otp/domain/model/otp_channel.dart';
 import 'package:feature_otp/presentation/cubit/otp_cubit.dart';
@@ -17,21 +18,33 @@ class OtpScreen extends StatelessWidget {
     super.key,
     required this.channel,
     required this.contact,
+    required this.initialCountdownSeconds,
     this.onSuccess,
   });
 
   final OtpChannel channel;
   final String contact;
+  final int initialCountdownSeconds;
   final void Function(String token)? onSuccess;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => GetIt.instance<OtpCubit>()..init(channel, contact),
-      child: _OtpView(
-        channel: channel,
-        contact: contact,
-        onSuccess: onSuccess,
+      create: (_) => GetIt.instance<OtpCubit>()
+        ..init(channel, contact, initialCountdownSeconds),
+      child: Overlay(
+        initialEntries: [
+          OverlayEntry(
+            canSizeOverlay: true,
+            builder: (_) => FloraToastOverlay(
+              child: _OtpView(
+                channel: channel,
+                contact: contact,
+                onSuccess: onSuccess,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -48,7 +61,20 @@ class _OtpView extends StatelessWidget {
   final String contact;
   final void Function(String token)? onSuccess;
 
-  String _toastMessage(BuildContext context, Failure failure) {
+  void _showToast(
+    BuildContext context, {
+    required String message,
+    required FloraToastVariant variant,
+  }) {
+    FloraToast.show(
+      context,
+      position: FloraToastPosition.top,
+      message: message,
+      variant: variant,
+    );
+  }
+
+  String _failureMessage(BuildContext context, Failure failure) {
     final l10n = OtpLocalizations.of(context);
     return switch (failure) {
       TooManyAttempts() => l10n.errorTooManyAttempts,
@@ -63,28 +89,30 @@ class _OtpView extends StatelessWidget {
 
     return BlocListener<OtpCubit, OtpState>(
       listener: (context, state) {
-        switch (state) {
+        switch (state.verifyStatus) {
           case OtpVerifySuccess(:final token):
             onSuccess?.call(token);
-            Navigator.of(context).pop(token);
+            AppNavigator.pop(context, token);
           case OtpVerifyError(:final failure):
-            if (failure is InvalidCode) {
-              // Shown as error text on the input — no toast, no reset
-            } else {
-              FloraToast.show(context, position: FloraToastPosition.top,
-                message: _toastMessage(context, failure),
+            if (failure is! InvalidCode) {
+              _showToast(context,
+                message: _failureMessage(context, failure),
                 variant: FloraToastVariant.error,
               );
               cubit.resetToIdle();
             }
+          default:
+            break;
+        }
+        switch (state.resendStatus) {
           case OtpResendError(:final failure):
-            FloraToast.show(context, position: FloraToastPosition.top,
-              message: _toastMessage(context, failure),
+            _showToast(context,
+              message: _failureMessage(context, failure),
               variant: FloraToastVariant.error,
             );
             cubit.resetToIdle();
           case OtpResendSuccess():
-            FloraToast.show(context, position: FloraToastPosition.top,
+            _showToast(context,
               message: OtpLocalizations.of(context).resendSuccess,
               variant: FloraToastVariant.success,
             );
@@ -95,17 +123,19 @@ class _OtpView extends StatelessWidget {
       },
       child: BlocBuilder<OtpCubit, OtpState>(
         builder: (context, state) {
-          final invalidCodeError = state is OtpVerifyError &&
-              state.failure is InvalidCode
-              ? OtpLocalizations.of(context).errorInvalidCode
-              : null;
+          final invalidCodeError =
+              state.verifyStatus is OtpVerifyError &&
+                      (state.verifyStatus as OtpVerifyError).failure
+                          is InvalidCode
+                  ? OtpLocalizations.of(context).errorInvalidCode
+                  : null;
 
           return Padding(
             padding: EdgeInsets.fromLTRB(
               FloraSpacing.s2,
               FloraSpacing.s4,
               FloraSpacing.s2,
-              FloraSpacing.s4
+              FloraSpacing.s4,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -122,8 +152,9 @@ class _OtpView extends StatelessWidget {
                 const SizedBox(height: FloraSpacing.s4),
                 OtpActionsWidget(
                   isCodeComplete: state.isCodeComplete,
-                  isVerifying: state is OtpVerifying,
-                  isResending: state is OtpResending,
+                  isVerifying: state.verifyStatus is OtpVerifying,
+                  isResending: state.resendStatus is OtpResending,
+                  countdownSeconds: state.countdownSeconds,
                   onValidate: cubit.verifyCode,
                   onResend: cubit.resendCode,
                 ),

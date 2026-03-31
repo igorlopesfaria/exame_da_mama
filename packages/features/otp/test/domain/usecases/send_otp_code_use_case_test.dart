@@ -18,6 +18,8 @@ void main() {
   late MockLogger mockLogger;
   late SendOtpCodeUseCase useCase;
 
+  const tNextRequestIn = 60;
+
   setUpAll(() {
     registerFallbackValue(OtpChannel.email);
   });
@@ -33,18 +35,18 @@ void main() {
   });
 
   group('SendOtpCodeUseCase', () {
-    test('returns Right(unit) on success', () async {
+    test('returns Right(nextRequestIn) on success', () async {
       when(() => mockRepository.sendCode(any(), any()))
-          .thenAnswer((_) async => right(unit));
+          .thenAnswer((_) async => right(tNextRequestIn));
 
       final result = await useCase.call(OtpChannel.email, 'user@test.com');
 
-      expect(result, right(unit));
+      expect(result, right(tNextRequestIn));
     });
 
     test('delegates channel and value to repository', () async {
       when(() => mockRepository.sendCode(any(), any()))
-          .thenAnswer((_) async => right(unit));
+          .thenAnswer((_) async => right(tNextRequestIn));
 
       await useCase.call(OtpChannel.phone, '+5511999999999');
 
@@ -89,7 +91,7 @@ void main() {
 
     test('logs success with channel on Right', () async {
       when(() => mockRepository.sendCode(any(), any()))
-          .thenAnswer((_) async => right(unit));
+          .thenAnswer((_) async => right(tNextRequestIn));
 
       await useCase.call(OtpChannel.email, 'user@test.com');
 
