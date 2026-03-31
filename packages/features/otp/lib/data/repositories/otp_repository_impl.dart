@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:feature_otp/data/datasources/otp_remote_data_source.dart';
 import 'package:feature_otp/domain/failures/otp_failure.dart';
 import 'package:feature_otp/domain/model/otp_channel.dart';
+import 'package:feature_otp/domain/model/verification_token.dart';
 import 'package:feature_otp/domain/repositories/otp_repository.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:injectable/injectable.dart';
@@ -23,7 +24,7 @@ class OtpRepositoryImpl implements OtpRepository {
   }
 
   @override
-  Future<Either<OtpFailure, String>> verifyCode(
+  Future<Either<OtpFailure, VerificationToken>> verifyCode(
     OtpChannel channel, {
     required String value,
     required String code,
@@ -37,12 +38,13 @@ class OtpRepositoryImpl implements OtpRepository {
   }
 
   OtpFailure _mapError(DioException e) {
-    final error = e.response?.data?['error'] as String?;
+    if (e.response == null) return const ServerError();
+    final error = e.response!.data?['error'] as String?;
     return switch (error) {
-      'INVALID_CODE' => const InvalidCode(),
-      'EXPIRED_CODE' => const ExpiredCode(),
+      'INVALID_CODE'      => const InvalidCode(),
+      'EXPIRED_CODE'      => const ExpiredCode(),
       'TOO_MANY_ATTEMPTS' => const TooManyAttempts(),
-      _ => const ServerError(),
+      _                   => const ServerError(),
     };
   }
 }

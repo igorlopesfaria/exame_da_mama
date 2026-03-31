@@ -1,6 +1,7 @@
 import 'package:commons_observability/commons_observability.dart';
 import 'package:feature_otp/domain/failures/otp_failure.dart';
 import 'package:feature_otp/domain/model/otp_channel.dart';
+import 'package:feature_otp/domain/model/verification_token.dart';
 import 'package:feature_otp/domain/repositories/otp_repository.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:injectable/injectable.dart';
@@ -12,7 +13,7 @@ class VerifyOtpCodeUseCase {
   final OtpRepository _repository;
   final IObservability _observability;
 
-  Future<Either<OtpFailure, String>> call(
+  Future<Either<OtpFailure, VerificationToken>> call(
     OtpChannel channel, {
     required String value,
     required String code,

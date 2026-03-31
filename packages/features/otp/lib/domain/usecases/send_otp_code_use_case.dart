@@ -15,9 +15,9 @@ class SendOtpCodeUseCase {
   Future<Either<OtpFailure, Unit>> call(OtpChannel channel, String value) async {
     final result = await _repository.sendCode(channel, value);
     result.fold(
-      (f) => _observability.logger.error(
+      (_) => _observability.logger.error(
         'otp.send_code.failed',
-        attributes: {'channel': channel.name, 'failureType': f.runtimeType.toString()},
+        attributes: {'channel': channel.name},
       ),
       (_) => _observability.logger.info(
         'otp.send_code.success',
