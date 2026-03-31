@@ -11,6 +11,16 @@ class ServerFailure extends Failure {
   const ServerFailure(super.message);
 }
 
+class BadRequestFailure extends Failure {
+  const BadRequestFailure({required this.errorCode})
+      : super(errorCode);
+  final String errorCode;
+}
+
+class TooManyRequestsFailure extends Failure {
+  const TooManyRequestsFailure([super.message = 'Too many requests']);
+}
+
 class UnauthorizedFailure extends Failure {
   const UnauthorizedFailure([super.message = 'Unauthorized']);
 }

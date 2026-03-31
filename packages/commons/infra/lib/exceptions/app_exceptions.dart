@@ -14,6 +14,17 @@ class ServerException extends AppException {
   final int? statusCode;
 }
 
+class BadRequestException extends AppException {
+  const BadRequestException({required this.errorCode})
+      : super(message: errorCode);
+  final String errorCode;
+}
+
+class TooManyRequestsException extends AppException {
+  const TooManyRequestsException([String message = 'Too many requests'])
+      : super(message: message);
+}
+
 class UnauthorizedException extends AppException {
   const UnauthorizedException([String message = 'Unauthorized'])
       : super(message: message);

@@ -1,5 +1,6 @@
 import 'package:commons_infra/failures/app_failures.dart';
 import 'package:commons_observability/commons_observability.dart';
+import 'package:feature_otp/domain/failures/otp_failure.dart';
 import 'package:feature_otp/domain/model/otp_channel.dart';
 import 'package:feature_otp/domain/repositories/otp_repository.dart';
 import 'package:feature_otp/domain/usecases/send_otp_code_use_case.dart';
@@ -50,14 +51,26 @@ void main() {
       verify(() => mockRepository.sendCode(OtpChannel.phone, '+5511999999999')).called(1);
     });
 
-    test('returns Left(failure) on repository failure', () async {
+    test('returns Left(TooManyAttempts) on TooManyRequestsFailure', () async {
       when(() => mockRepository.sendCode(any(), any()))
-          .thenAnswer((_) async => left(const ServerFailure('error')));
+          .thenAnswer((_) async => left(const TooManyRequestsFailure()));
 
       final result = await useCase.call(OtpChannel.email, 'user@test.com');
 
       result.fold(
-        (f) => expect(f, isA<ServerFailure>()),
+        (f) => expect(f, isA<TooManyAttempts>()),
+        (_) => fail('expected Left'),
+      );
+    });
+
+    test('returns Left(ServerError) on any other failure', () async {
+      when(() => mockRepository.sendCode(any(), any()))
+          .thenAnswer((_) async => left(const NetworkFailure()));
+
+      final result = await useCase.call(OtpChannel.email, 'user@test.com');
+
+      result.fold(
+        (f) => expect(f, isA<ServerError>()),
         (_) => fail('expected Left'),
       );
     });
@@ -74,15 +87,15 @@ void main() {
       )).called(1);
     });
 
-    test('logs error with channel on Left', () async {
+    test('logs error with channel and failureType on Left', () async {
       when(() => mockRepository.sendCode(any(), any()))
-          .thenAnswer((_) async => left(const ServerFailure('error')));
+          .thenAnswer((_) async => left(const TooManyRequestsFailure()));
 
       await useCase.call(OtpChannel.phone, '+5511999999999');
 
       verify(() => mockLogger.error(
         'otp.send_code.failed',
-        attributes: {'channel': 'phone'},
+        attributes: {'channel': 'phone', 'failureType': 'TooManyAttempts'},
       )).called(1);
     });
   });
