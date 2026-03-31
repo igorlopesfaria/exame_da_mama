@@ -41,6 +41,7 @@ class _StartWidgetState extends State<StartWidget> {
         OtpLocalizations.delegate,
       ],
       supportedLocales: const [Locale('pt'), Locale('en')],
+      builder: (context, child) => FloraToastOverlay(child: child!),
     );
   }
 }

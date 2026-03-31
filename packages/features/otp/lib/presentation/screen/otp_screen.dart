@@ -71,23 +71,20 @@ class _OtpView extends StatelessWidget {
             if (failure is InvalidCode) {
               // Shown as error text on the input — no toast, no reset
             } else {
-              FloraToast.show(
-                context,
+              FloraToast.show(context, position: FloraToastPosition.top,
                 message: _toastMessage(context, failure),
                 variant: FloraToastVariant.error,
               );
               cubit.resetToIdle();
             }
           case OtpResendError(:final failure):
-            FloraToast.show(
-              context,
+            FloraToast.show(context, position: FloraToastPosition.top,
               message: _toastMessage(context, failure),
               variant: FloraToastVariant.error,
             );
             cubit.resetToIdle();
           case OtpResendSuccess():
-            FloraToast.show(
-              context,
+            FloraToast.show(context, position: FloraToastPosition.top,
               message: OtpLocalizations.of(context).resendSuccess,
               variant: FloraToastVariant.success,
             );

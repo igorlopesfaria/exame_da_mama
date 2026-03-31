@@ -5,32 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flora/components/toast/flora_toast_attributes.dart';
 import 'package:flora/components/toast/flora_toast_style.dart';
 
-class FloraToast {
-  FloraToast({
-    required String message,
-    FloraToastVariant variant          = FloraToastVariant.info,
-    FloraToastDuration duration        = FloraToastDuration.medium,
-    FloraToastPosition position        = FloraToastPosition.bottom,
-    String? actionLabel,
-    void Function()? onAction,
-    void Function()? onDismissed,
-    bool showCloseButton               = false,
-    Widget? leadingIcon,
-  }) : _attributes = FloraToastAttributes(
-         message:         message,
-         variant:         variant,
-         duration:        duration,
-         position:        position,
-         actionLabel:     actionLabel,
-         onAction:        onAction,
-         onDismissed:     onDismissed,
-         showCloseButton: showCloseButton,
-         leadingIcon:     leadingIcon,
-       );
-
-  final FloraToastAttributes _attributes;
-
-  static ScaffoldFeatureController<SnackBar, SnackBarClosedReason> show(
+abstract final class FloraToast {
+  static void show(
     BuildContext context, {
     required String message,
     FloraToastVariant variant          = FloraToastVariant.info,
@@ -42,7 +18,8 @@ class FloraToast {
     bool showCloseButton               = false,
     Widget? leadingIcon,
   }) {
-    return FloraToast(
+    FloraToastOverlay.show(
+      context,
       message:         message,
       variant:         variant,
       duration:        duration,
@@ -52,110 +29,16 @@ class FloraToast {
       onDismissed:     onDismissed,
       showCloseButton: showCloseButton,
       leadingIcon:     leadingIcon,
-    )._present(context);
+    );
   }
 
   static void hide(BuildContext context) =>
-      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      FloraToastOverlay.of(context)._dismiss();
 
   static void clearAll(BuildContext context) =>
-      ScaffoldMessenger.of(context).clearSnackBars();
-
-  ScaffoldFeatureController<SnackBar, SnackBarClosedReason> _present(
-    BuildContext context,
-  ) {
-    ScaffoldMessenger.of(context).hideCurrentSnackBar();
-
-    final controller = ScaffoldMessenger.of(context)
-        .showSnackBar(_buildSnackBar(context));
-
-    if (_attributes.onDismissed != null) {
-      controller.closed.then((_) => _attributes.onDismissed!());
-    }
-
-    return controller;
-  }
-
-  SnackBar _buildSnackBar(BuildContext context) {
-    final style = FloraToastStyle.resolve(context, _attributes.variant);
-    final isBottom = _attributes.position == FloraToastPosition.bottom;
-
-    return SnackBar(
-      content: _FloraToastContent(attributes: _attributes, style: style),
-      backgroundColor: style.backgroundColor,
-      behavior: SnackBarBehavior.floating,
-      shape: RoundedRectangleBorder(borderRadius: FloraToastStyle.shape),
-      margin: EdgeInsets.only(
-        left:   FloraToastStyle.horizontalMargin,
-        right:  FloraToastStyle.horizontalMargin,
-        bottom: isBottom
-            ? FloraToastStyle.bottomMargin
-            : MediaQuery.of(context).size.height - FloraToastStyle.topMargin - 80,
-      ),
-      duration: _attributes.isPersistent
-          ? const Duration(days: 365)
-          : _attributes.effectiveDuration,
-      dismissDirection: DismissDirection.horizontal,
-      action: _attributes.actionLabel != null
-          ? SnackBarAction(
-              label:     _attributes.actionLabel!,
-              textColor: style.actionColor,
-              onPressed: _attributes.onAction ?? () {},
-            )
-          : null,
-      padding:   EdgeInsets.zero,
-      elevation: 6,
-    );
-  }
+      FloraToastOverlay.of(context)._dismiss();
 }
 
-class _FloraToastContent extends StatelessWidget {
-  const _FloraToastContent({
-    required this.attributes,
-    required this.style,
-  });
-
-  final FloraToastAttributes attributes;
-  final FloraToastStyleData style;
-
-  @override
-  Widget build(BuildContext context) {
-    return ConstrainedBox(
-      constraints: const BoxConstraints(maxWidth: FloraToastStyle.maxWidth),
-      child: Padding(
-        padding: FloraToastStyle.contentPadding,
-        child: Row(
-          children: [
-            attributes.leadingIcon ??
-                Icon(style.iconData, size: 20, color: style.foregroundColor),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Text(
-                attributes.message,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: style.foregroundColor,
-                    ),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-            if (attributes.showCloseButton) ...[
-              const SizedBox(width: 8),
-              GestureDetector(
-                onTap: () => FloraToast.hide(context),
-                child: Icon(
-                  Icons.close_rounded,
-                  size: 20,
-                  color: style.foregroundColor.withValues(alpha: 0.7),
-                ),
-              ),
-            ],
-          ],
-        ),
-      ),
-    );
-  }
-}
 
 class FloraToastOverlay extends StatefulWidget {
   const FloraToastOverlay({super.key, required this.child});
@@ -166,6 +49,32 @@ class FloraToastOverlay extends StatefulWidget {
     final state = context.findAncestorStateOfType<FloraToastOverlayState>();
     assert(state != null);
     return state!;
+  }
+
+  static void show(
+    BuildContext context, {
+    required String message,
+    FloraToastVariant variant          = FloraToastVariant.info,
+    FloraToastDuration duration        = FloraToastDuration.medium,
+    FloraToastPosition position        = FloraToastPosition.bottom,
+    String? actionLabel,
+    void Function()? onAction,
+    void Function()? onDismissed,
+    bool showCloseButton               = false,
+    Widget? leadingIcon,
+  }) {
+    FloraToastOverlay.of(context)._show(
+      context,
+      message:         message,
+      variant:         variant,
+      duration:        duration,
+      position:        position,
+      actionLabel:     actionLabel,
+      onAction:        onAction,
+      onDismissed:     onDismissed,
+      showCloseButton: showCloseButton,
+      leadingIcon:     leadingIcon,
+    );
   }
 
   @override
@@ -200,7 +109,8 @@ class FloraToastOverlayState extends State<FloraToastOverlay>
     super.dispose();
   }
 
-  void show({
+  void _show(
+    BuildContext callerContext, {
     required String message,
     FloraToastVariant variant          = FloraToastVariant.info,
     FloraToastDuration duration        = FloraToastDuration.medium,
@@ -211,7 +121,7 @@ class FloraToastOverlayState extends State<FloraToastOverlay>
     bool showCloseButton               = false,
     Widget? leadingIcon,
   }) {
-    final overlay = Overlay.of(context);
+    final overlay = Overlay.of(callerContext);
     _dismiss().then((_) {
       _current = FloraToastAttributes(
         message:         message,
