@@ -67,7 +67,7 @@ void main() {
       );
       result.fold(
         (f) {
-          expect(f, isA<ServerFailure>());
+          expect(f, isA<GenericFailure>());
           expect(f.message, 'timeout');
         },
         (_) => fail('expected Left'),
@@ -79,7 +79,7 @@ void main() {
         () async => throw Exception('unexpected'),
       );
       result.fold(
-        (f) => expect(f, isA<ServerFailure>()),
+        (f) => expect(f, isA<GenericFailure>()),
         (_) => fail('expected Left'),
       );
     });

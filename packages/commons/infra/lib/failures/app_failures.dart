@@ -7,8 +7,8 @@ class NetworkFailure extends Failure {
   const NetworkFailure([super.message = 'No internet connection']);
 }
 
-class ServerFailure extends Failure {
-  const ServerFailure(super.message);
+class GenericFailure extends Failure {
+  const GenericFailure(super.message);
 }
 
 class BadRequestFailure extends Failure {

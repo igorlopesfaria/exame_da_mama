@@ -37,7 +37,7 @@ abstract final class ExceptionMapper {
       NotFoundException()        => const NotFoundFailure(),
       NetworkException()         => const NetworkFailure(),
       ParseException()           => const ParseFailure(),
-      ServerException()          => ServerFailure(e.message),
+      ServerException()          => GenericFailure(e.message),
     });
   }
 }

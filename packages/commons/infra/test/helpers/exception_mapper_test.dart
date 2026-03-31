@@ -166,7 +166,7 @@ void main() {
       final result = ExceptionMapper.mapExceptionToFailure(exception);
       result.fold(
         (f) {
-          expect(f, isA<ServerFailure>());
+          expect(f, isA<GenericFailure>());
           expect(f.message, 'DB timeout');
         },
         (_) => fail('expected Left'),

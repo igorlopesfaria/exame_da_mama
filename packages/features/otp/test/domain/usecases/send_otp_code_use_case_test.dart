@@ -75,14 +75,14 @@ void main() {
       );
     });
 
-    test('passes through ServerFailure unchanged', () async {
+    test('passes through GenericFailure unchanged', () async {
       when(() => mockRepository.sendCode(any(), any()))
-          .thenAnswer((_) async => left(const ServerFailure('error')));
+          .thenAnswer((_) async => left(const GenericFailure('error')));
 
       final result = await useCase.call(OtpChannel.email, 'user@test.com');
 
       result.fold(
-        (f) => expect(f, isA<ServerFailure>()),
+        (f) => expect(f, isA<GenericFailure>()),
         (_) => fail('expected Left'),
       );
     });

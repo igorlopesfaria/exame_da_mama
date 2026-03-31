@@ -51,13 +51,13 @@ void main() {
 
     test('returns Left(failure) when clearUser fails', () async {
       when(() => mockLocalRepo.clearUser())
-          .thenAnswer((_) async => const Left(ServerFailure('storage error')));
+          .thenAnswer((_) async => const Left(GenericFailure('storage error')));
 
       final result = await useCase.call();
 
       result.fold(
         (f) {
-          expect(f, isA<ServerFailure>());
+          expect(f, isA<GenericFailure>());
           expect(f.message, 'storage error');
         },
         (_) => fail('expected Left'),

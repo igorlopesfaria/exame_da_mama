@@ -52,14 +52,14 @@ void main() {
       );
     });
 
-    test('returns Left(ServerFailure) on ServerException', () async {
+    test('returns Left(GenericFailure) on ServerException', () async {
       when(() => mockDataSource.sendCode(any(), any()))
           .thenThrow(const ServerException(message: 'Internal error'));
 
       final result = await repository.sendCode(OtpChannel.email, 'user@test.com');
 
       result.fold(
-        (f) => expect(f, isA<ServerFailure>()),
+        (f) => expect(f, isA<GenericFailure>()),
         (_) => fail('expected Left'),
       );
     });
@@ -100,7 +100,7 @@ void main() {
       );
     });
 
-    test('returns Left(ServerFailure) on ServerException', () async {
+    test('returns Left(GenericFailure) on ServerException', () async {
       when(() => mockDataSource.verifyCode(any(), value: any(named: 'value'), code: any(named: 'code')))
           .thenThrow(const ServerException(message: 'Bad request'));
 
@@ -111,7 +111,7 @@ void main() {
       );
 
       result.fold(
-        (f) => expect(f, isA<ServerFailure>()),
+        (f) => expect(f, isA<GenericFailure>()),
         (_) => fail('expected Left'),
       );
     });
