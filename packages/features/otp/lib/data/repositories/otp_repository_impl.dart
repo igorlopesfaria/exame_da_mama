@@ -39,10 +39,10 @@ class OtpRepositoryImpl implements OtpRepository {
   OtpFailure _mapError(DioException e) {
     final error = e.response?.data?['error'] as String?;
     return switch (error) {
-      'INVALID_CODE' => const OtpFailure.invalidCode(),
-      'EXPIRED_CODE' => const OtpFailure.expiredCode(),
-      'TOO_MANY_ATTEMPTS' => const OtpFailure.tooManyAttempts(),
-      _ => const OtpFailure.serverError(),
+      'INVALID_CODE' => const InvalidCode(),
+      'EXPIRED_CODE' => const ExpiredCode(),
+      'TOO_MANY_ATTEMPTS' => const TooManyAttempts(),
+      _ => const ServerError(),
     };
   }
 }

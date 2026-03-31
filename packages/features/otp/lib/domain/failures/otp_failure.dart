@@ -1,11 +1,19 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
+sealed class OtpFailure {
+  const OtpFailure();
+}
 
-part 'otp_failure.freezed.dart';
+class InvalidCode extends OtpFailure {
+  const InvalidCode();
+}
 
-@freezed
-sealed class OtpFailure with _$OtpFailure {
-  const factory OtpFailure.invalidCode() = InvalidCode;
-  const factory OtpFailure.expiredCode() = ExpiredCode;
-  const factory OtpFailure.tooManyAttempts() = TooManyAttempts;
-  const factory OtpFailure.serverError() = ServerError;
+class ExpiredCode extends OtpFailure {
+  const ExpiredCode();
+}
+
+class TooManyAttempts extends OtpFailure {
+  const TooManyAttempts();
+}
+
+class ServerError extends OtpFailure {
+  const ServerError();
 }
