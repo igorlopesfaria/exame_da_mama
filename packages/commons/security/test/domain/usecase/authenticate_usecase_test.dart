@@ -1,4 +1,5 @@
 import 'package:commons_infra/failures/app_failures.dart';
+import 'package:commons_observability/commons_observability.dart';
 import 'package:commons_security/domain/model/token.dart';
 import 'package:commons_security/domain/repository/i_security_local_repository.dart';
 import 'package:commons_security/domain/repository/i_security_remote_repository.dart';
@@ -7,15 +8,16 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:mocktail/mocktail.dart';
 
-class MockSecurityRemoteRepository extends Mock
-    implements ISecurityRemoteRepository {}
-
-class MockSecurityLocalRepository extends Mock
-    implements ISecurityLocalRepository {}
+class MockSecurityRemoteRepository extends Mock implements ISecurityRemoteRepository {}
+class MockSecurityLocalRepository extends Mock implements ISecurityLocalRepository {}
+class MockObservability extends Mock implements IObservability {}
+class MockLogger extends Mock implements ILogger {}
 
 void main() {
   late MockSecurityRemoteRepository mockRemoteRepo;
   late MockSecurityLocalRepository mockLocalRepo;
+  late MockObservability mockObservability;
+  late MockLogger mockLogger;
   late AuthenticateUseCase useCase;
 
   const tCpf      = '12345678901';
@@ -27,9 +29,14 @@ void main() {
   });
 
   setUp(() {
-    mockRemoteRepo = MockSecurityRemoteRepository();
-    mockLocalRepo  = MockSecurityLocalRepository();
-    useCase        = AuthenticateUseCase(mockRemoteRepo, mockLocalRepo);
+    mockRemoteRepo    = MockSecurityRemoteRepository();
+    mockLocalRepo     = MockSecurityLocalRepository();
+    mockLogger        = MockLogger();
+    mockObservability = MockObservability();
+    when(() => mockObservability.logger).thenReturn(mockLogger);
+    when(() => mockLogger.info(any(), attributes: any(named: 'attributes'))).thenReturn(null);
+    when(() => mockLogger.error(any(), throwable: any(named: 'throwable'), attributes: any(named: 'attributes'), stackTrace: any(named: 'stackTrace'))).thenReturn(null);
+    useCase = AuthenticateUseCase(mockRemoteRepo, mockLocalRepo, mockObservability);
   });
 
   group('AuthenticateUseCase', () {

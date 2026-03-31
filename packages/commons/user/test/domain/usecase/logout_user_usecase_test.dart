@@ -1,4 +1,5 @@
 import 'package:commons_infra/failures/app_failures.dart';
+import 'package:commons_observability/commons_observability.dart';
 import 'package:commons_user/domain/repository/i_user_local_repository.dart';
 import 'package:commons_user/domain/usecase/logout_user_usecase.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -6,14 +7,23 @@ import 'package:fpdart/fpdart.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockUserLocalRepository extends Mock implements IUserLocalRepository {}
+class MockObservability extends Mock implements IObservability {}
+class MockLogger extends Mock implements ILogger {}
 
 void main() {
   late MockUserLocalRepository mockLocalRepo;
+  late MockObservability mockObservability;
+  late MockLogger mockLogger;
   late LogoutUserUseCase useCase;
 
   setUp(() {
-    mockLocalRepo = MockUserLocalRepository();
-    useCase       = LogoutUserUseCase(mockLocalRepo);
+    mockLocalRepo     = MockUserLocalRepository();
+    mockLogger        = MockLogger();
+    mockObservability = MockObservability();
+    when(() => mockObservability.logger).thenReturn(mockLogger);
+    when(() => mockLogger.info(any(), attributes: any(named: 'attributes'))).thenReturn(null);
+    when(() => mockLogger.error(any(), throwable: any(named: 'throwable'), attributes: any(named: 'attributes'), stackTrace: any(named: 'stackTrace'))).thenReturn(null);
+    useCase = LogoutUserUseCase(mockLocalRepo, mockObservability);
   });
 
   group('LogoutUserUseCase', () {
@@ -36,6 +46,7 @@ void main() {
         (_) => fail('expected Right'),
         (u) => expect(u, unit),
       );
+      verify(() => mockLogger.info('user.logout.success')).called(1);
     });
 
     test('returns Left(failure) when clearUser fails', () async {
@@ -51,6 +62,10 @@ void main() {
         },
         (_) => fail('expected Left'),
       );
+      verify(() => mockLogger.error(
+        'user.logout.failed',
+        attributes: any(named: 'attributes'),
+      )).called(1);
     });
   });
 }

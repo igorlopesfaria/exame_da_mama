@@ -5,7 +5,7 @@ version: 1.0.0
 publish_to: "none"
 
 environment:
-  sdk: ">=3.8.0 <4.0.0"
+  sdk: ">=3.9.0 <4.0.0"
 
 dependencies:
   flutter:
@@ -13,10 +13,12 @@ dependencies:
 
   equatable: ^2.0.5
   injectable: ^2.6.0
-  get_it: ^9.0.5
+  get_it: ^9.1.1
   fpdart: ^1.1.0
   commons_infra:
     path: ../infra
+  commons_observability:
+    path: ../observability
 
 dev_dependencies:
   flutter_test:

@@ -2,6 +2,7 @@ import 'package:commons_navigation/commons_navigation.dart';
 import 'package:feature_initialization/presentation/cubit/initialization_cubit.dart';
 import 'package:feature_initialization/presentation/cubit/initialization_state.dart';
 import 'package:feature_initialization/presentation/widget/initialization_buttons.dart';
+import 'package:flora/flora.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -41,6 +42,7 @@ class _InitializationView extends StatelessWidget {
           child: Column(
             children: [
               const Spacer(),
+              FloraImage.asset(FloraImageAssets.imgInitialization),
               const InitializationButtons(),
             ],
           ),
