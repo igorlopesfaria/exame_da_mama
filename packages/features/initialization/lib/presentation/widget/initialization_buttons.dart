@@ -1,5 +1,7 @@
 import 'package:feature_initialization/presentation/cubit/initialization_cubit.dart';
 import 'package:feature_initialization/presentation/string/initialization_localizations.dart';
+import 'package:feature_otp/domain/model/otp_channel.dart';
+import 'package:feature_otp/presentation/screen/otp_screen.dart';
 import 'package:flora/flora.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -48,9 +50,22 @@ class InitializationButtons extends StatelessWidget {
           const SizedBox(height: FloraSpacing.s2),
           FloraButton(
             label: l10n.signIn,
-            onPressed: cubit.goToLogin,
+            // onPressed: cubit.goToLogin,
             variant: FloraButtonVariant.outlined,
             size: FloraButtonSize.large,
+            onPressed: () async {
+              final token = await FloraBottomSheet.show(
+                context,
+                child: OtpScreen(
+                  channel: OtpChannel.email,       // or OtpChannel.phone
+                  contact: 'user@example.com',     // email or phone number
+                  onSuccess: (token) {
+                    // called immediately on success, before the sheet closes
+                    // use token here if you need it synchronously
+                  },
+                ),
+              );
+            }
           ),
         ],
       ),

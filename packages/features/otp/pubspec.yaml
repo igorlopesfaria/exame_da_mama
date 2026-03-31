@@ -10,6 +10,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  intl: any
+  flutter_bloc: ^9.1.1
   injectable: ^2.6.0
   get_it: ^9.1.1
   fpdart: ^1.2.0
@@ -17,6 +21,11 @@ dependencies:
     path: ../../commons/infra
   commons_observability:
     path: ../../commons/observability
+  flora:
+    path: ../../design_system/flora
+
+flutter:
+  generate: true
 
 dev_dependencies:
   flutter_test:

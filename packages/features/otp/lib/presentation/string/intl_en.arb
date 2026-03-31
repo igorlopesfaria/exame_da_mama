@@ -1,0 +1,23 @@
+{
+  "@@locale": "en",
+  "title": "Did your code arrive?",
+  "descriptionEmail": "We just sent an email to {contact}",
+  "@descriptionEmail": {
+    "placeholders": {
+      "contact": { "type": "String" }
+    }
+  },
+  "descriptionPhone": "We just sent an SMS to {contact}",
+  "@descriptionPhone": {
+    "placeholders": {
+      "contact": { "type": "String" }
+    }
+  },
+  "resendCode": "Resend code",
+  "validateCode": "Validate code",
+  "errorNoInternet": "No internet connection",
+  "errorInvalidCode": "Invalid or expired code",
+  "errorTooManyAttempts": "Too many attempts. Try again later",
+  "errorGeneric": "Something unexpected happened. Try again",
+  "resendSuccess": "New code sent successfully"
+}

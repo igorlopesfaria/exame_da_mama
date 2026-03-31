@@ -22,6 +22,7 @@ import 'package:feature_otp/domain/usecases/send_otp_code_use_case.dart'
     as _i273;
 import 'package:feature_otp/domain/usecases/verify_otp_code_use_case.dart'
     as _i388;
+import 'package:feature_otp/presentation/cubit/otp_cubit.dart' as _i901;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 
@@ -48,6 +49,12 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i388.VerifyOtpCodeUseCase(
         gh<_i174.OtpRepository>(),
         gh<_i731.IObservability>(),
+      ),
+    );
+    gh.factory<_i901.OtpCubit>(
+      () => _i901.OtpCubit(
+        gh<_i273.SendOtpCodeUseCase>(),
+        gh<_i388.VerifyOtpCodeUseCase>(),
       ),
     );
     return this;
