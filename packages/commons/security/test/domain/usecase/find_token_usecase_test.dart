@@ -56,13 +56,13 @@ void main() {
 
     test('returns Left(failure) when repository fails', () async {
       when(() => mockLocalRepo.findToken())
-          .thenAnswer((_) async => const Left(ServerFailure('storage error')));
+          .thenAnswer((_) async => const Left(GenericFailure('storage error')));
 
       final result = await useCase.call();
 
       result.fold(
         (f) {
-          expect(f, isA<ServerFailure>());
+          expect(f, isA<GenericFailure>());
           expect(f.message, 'storage error');
         },
         (_) => fail('expected Left'),
@@ -104,7 +104,7 @@ void main() {
 
     test('logs error when repository fails', () async {
       when(() => mockLocalRepo.findToken())
-          .thenAnswer((_) async => const Left(ServerFailure('storage error')));
+          .thenAnswer((_) async => const Left(GenericFailure('storage error')));
 
       await useCase.call();
 

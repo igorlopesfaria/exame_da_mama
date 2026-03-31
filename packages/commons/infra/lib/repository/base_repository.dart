@@ -11,7 +11,7 @@ abstract class BaseRepository {
     } on AppException catch (e) {
       return ExceptionMapper.mapExceptionToFailure(e);
     } catch (e) {
-      return Left(ServerFailure(e.toString()));
+      return Left(GenericFailure(e.toString()));
     }
   }
 }

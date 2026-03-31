@@ -30,7 +30,7 @@ abstract final class FloraTextStyleResolver {
     final cs = Theme.of(context).colorScheme;
     return switch (color) {
       FloraTextColor.primary   => cs.onSurface,
-      FloraTextColor.secondary => cs.outline,
+      FloraTextColor.secondary => cs.onSurfaceVariant,
       FloraTextColor.accent    => cs.primary,
       FloraTextColor.error     => cs.error,
       FloraTextColor.success   => cs.tertiary,

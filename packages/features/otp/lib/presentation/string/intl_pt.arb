@@ -1,0 +1,23 @@
+{
+  "@@locale": "pt",
+  "title": "Chegou o código?",
+  "descriptionEmail": "Acabamos de enviar um e-mail para {contact}",
+  "@descriptionEmail": {
+    "placeholders": {
+      "contact": { "type": "String" }
+    }
+  },
+  "descriptionPhone": "Acabamos de enviar um SMS para {contact}",
+  "@descriptionPhone": {
+    "placeholders": {
+      "contact": { "type": "String" }
+    }
+  },
+  "resendCode": "Reenviar código",
+  "validateCode": "Validar código",
+  "errorNoInternet": "Sem conexão com a internet",
+  "errorInvalidCode": "Código inválido ou expirado",
+  "errorTooManyAttempts": "Muitas tentativas. Tente novamente mais tarde",
+  "errorGeneric": "Algo inesperado ocorreu. Tente novamente",
+  "resendSuccess": "Novo código enviado com sucesso"
+}

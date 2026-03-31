@@ -118,7 +118,7 @@ void main() {
         when(() => mockRemoteRepo.loadUserById(any()))
             .thenAnswer((_) async => const Left(NetworkFailure()));
         when(() => mockLocalRepo.loadUser())
-            .thenAnswer((_) async => const Left(ServerFailure('cache error')));
+            .thenAnswer((_) async => const Left(GenericFailure('cache error')));
       });
 
       test('returns Left with original remote failure, not local failure', () async {

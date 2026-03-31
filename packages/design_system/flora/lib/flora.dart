@@ -32,6 +32,11 @@ export 'package:flora/components/inputs/flora_text_field_attributes.dart';
 export 'package:flora/components/inputs/flora_text_field_style.dart';
 export 'package:flora/components/inputs/flora_text_field.dart';
 
+// Text Input Code
+export 'package:flora/components/inputs/code/flora_text_input_code_attributes.dart';
+export 'package:flora/components/inputs/code/flora_text_input_code_style.dart';
+export 'package:flora/components/inputs/code/flora_text_input_code.dart';
+
 // Checkbox
 export 'package:flora/components/checkbox/flora_checkbox_attributes.dart';
 export 'package:flora/components/checkbox/flora_checkbox_style.dart';
@@ -109,6 +114,11 @@ export 'package:flora/components/text/flora_text.dart';
 export 'package:flora/components/toast/flora_toast_attributes.dart';
 export 'package:flora/components/toast/flora_toast_style.dart';
 export 'package:flora/components/toast/flora_toast.dart';
+
+// Bottom Sheet
+export 'package:flora/components/modals/bottom_sheet/flora_bottom_sheet_attributes.dart';
+export 'package:flora/components/modals/bottom_sheet/flora_bottom_sheet_style.dart';
+export 'package:flora/components/modals/bottom_sheet/flora_bottom_sheet.dart';
 
 // Media — Assets
 export 'package:flora/components/media/flora_media_assets.dart';

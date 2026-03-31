@@ -21,6 +21,8 @@ dependencies:
     path: ../../design_system/flora
   commons_navigation:
     path: ../../commons/navigation
+  feature_otp:
+    path: ../../features/otp
 
 flutter:
   generate: true

@@ -1,4 +1,4 @@
-sealed class Failure {
+abstract class Failure {
   const Failure(this.message);
   final String message;
 }
@@ -7,8 +7,18 @@ class NetworkFailure extends Failure {
   const NetworkFailure([super.message = 'No internet connection']);
 }
 
-class ServerFailure extends Failure {
-  const ServerFailure(super.message);
+class GenericFailure extends Failure {
+  const GenericFailure(super.message);
+}
+
+class BadRequestFailure extends Failure {
+  const BadRequestFailure({required this.errorCode})
+      : super(errorCode);
+  final String errorCode;
+}
+
+class TooManyRequestsFailure extends Failure {
+  const TooManyRequestsFailure([super.message = 'Too many requests']);
 }
 
 class UnauthorizedFailure extends Failure {

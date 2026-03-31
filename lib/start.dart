@@ -1,5 +1,6 @@
 import 'package:commons_navigation/commons_navigation.dart';
 import 'package:feature_initialization/presentation/string/initialization_localizations.dart';
+import 'package:feature_otp/presentation/string/otp_localizations.dart';
 import 'package:flora/flora.dart';
 import 'package:flutter/material.dart';
 
@@ -35,8 +36,12 @@ class _StartWidgetState extends State<StartWidget> {
       navigatorKey: AppNavigator.key,
       initialRoute: AppPaths.splashRoute,
       onGenerateRoute: AppRouter.onGenerateRoute,
-      localizationsDelegates: InitializationLocalizations.localizationsDelegates,
+      localizationsDelegates: [
+        ...InitializationLocalizations.localizationsDelegates,
+        OtpLocalizations.delegate,
+      ],
       supportedLocales: const [Locale('pt'), Locale('en')],
+      builder: (context, child) => FloraToastOverlay(child: child!),
     );
   }
 }

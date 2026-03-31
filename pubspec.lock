@@ -299,6 +299,13 @@ packages:
       relative: true
     source: path
     version: "1.0.0"
+  feature_otp:
+    dependency: "direct main"
+    description:
+      path: "packages/features/otp"
+      relative: true
+    source: path
+    version: "1.0.0"
   feature_splash:
     dependency: "direct main"
     description:

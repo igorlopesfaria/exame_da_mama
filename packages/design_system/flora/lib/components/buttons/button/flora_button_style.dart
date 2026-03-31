@@ -53,7 +53,7 @@ abstract final class FloraButtonStyle {
     final cs = Theme.of(context).colorScheme;
     return OutlinedButton.styleFrom(
       minimumSize: Size(64, height), padding: padding, shape: const StadiumBorder(),
-      foregroundColor: cs.primary, side: BorderSide(color: cs.outline),
+      foregroundColor: cs.primary, side: BorderSide(color: cs.primary),
       disabledForegroundColor: cs.onSurface.withValues(alpha: 0.38),
     );
   }
@@ -64,6 +64,7 @@ abstract final class FloraButtonStyle {
       minimumSize: Size(64, height), padding: padding.copyWith(left: 12, right: 12),
       shape: const StadiumBorder(), foregroundColor: cs.primary,
       disabledForegroundColor: cs.onSurface.withValues(alpha: 0.38),
+      textStyle: const TextStyle(decoration: TextDecoration.underline),
     );
   }
 
