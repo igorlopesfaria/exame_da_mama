@@ -32,6 +32,11 @@ export 'package:flora/components/inputs/flora_text_field_attributes.dart';
 export 'package:flora/components/inputs/flora_text_field_style.dart';
 export 'package:flora/components/inputs/flora_text_field.dart';
 
+// Text Input Code
+export 'package:flora/components/inputs/code/flora_text_input_code_attributes.dart';
+export 'package:flora/components/inputs/code/flora_text_input_code_style.dart';
+export 'package:flora/components/inputs/code/flora_text_input_code.dart';
+
 // Checkbox
 export 'package:flora/components/checkbox/flora_checkbox_attributes.dart';
 export 'package:flora/components/checkbox/flora_checkbox_style.dart';

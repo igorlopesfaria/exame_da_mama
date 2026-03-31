@@ -17,6 +17,7 @@ import 'package:flora_sample/radio_button/flora_radio_button_sample.dart';
 import 'package:flora_sample/switch/flora_switch_sample.dart';
 import 'package:flora_sample/text/flora_text_sample.dart';
 import 'package:flora_sample/text_field/flora_text_field_sample.dart';
+import 'package:flora_sample/text_input_code/flora_text_input_code_sample.dart';
 import 'package:flora_sample/toast/flora_toast_sample.dart';
 import 'package:flora_sample/bottom_sheet/flora_bottom_sheet_sample.dart';
 import 'package:flutter/material.dart';
@@ -31,6 +32,7 @@ class SampleList extends StatelessWidget {
     _SampleItem(title: 'Icon Button', subtitle: 'Standard, filled, tonal, outlined', screen: FloraIconButtonSample()),
     _SampleItem(title: 'FAB', subtitle: 'Small, regular, large — with and without label', screen: FloraFABSample()),
     _SampleItem(title: 'Text Field', subtitle: 'Filled, outlined, states', screen: FloraTextFieldSample()),
+    _SampleItem(title: 'Text Input Code', subtitle: 'OTP/PIN fields, outlined, filled, obscured', screen: FloraTextInputCodeSample()),
     _SampleItem(title: 'Checkbox', subtitle: 'States: checked, unchecked, error, disabled', screen: FloraCheckboxSample()),
     _SampleItem(title: 'Radio Button', subtitle: 'Group selection', screen: FloraRadioButtonSample()),
     _SampleItem(title: 'Switch', subtitle: 'On/off states', screen: FloraSwitchSample()),
