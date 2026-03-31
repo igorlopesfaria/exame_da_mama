@@ -1,4 +1,4 @@
-sealed class OtpFailure { const OtpFailure(); }
-class InvalidCode extends OtpFailure { const InvalidCode(); }
-class TooManyAttempts extends OtpFailure { const TooManyAttempts(); }
-class ServerError extends OtpFailure { const ServerError(); }
+import 'package:commons_infra/failures/app_failures.dart';
+
+class InvalidCode extends Failure { const InvalidCode() : super('Invalid or expired code'); }
+class TooManyAttempts extends Failure { const TooManyAttempts() : super('Too many attempts'); }

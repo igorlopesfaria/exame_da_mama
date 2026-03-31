@@ -14,7 +14,7 @@ class VerifyOtpCodeUseCase {
   final OtpRepository _repository;
   final IObservability _observability;
 
-  Future<Either<OtpFailure, VerificationToken>> call(
+  Future<Either<Failure, VerificationToken>> call(
     OtpChannel channel, {
     required String value,
     required String code,
@@ -39,9 +39,9 @@ class VerifyOtpCodeUseCase {
     );
   }
 
-  OtpFailure _mapFailure(Failure f) => switch (f) {
+  Failure _mapFailure(Failure f) => switch (f) {
     BadRequestFailure()      => const InvalidCode(),
     TooManyRequestsFailure() => const TooManyAttempts(),
-    _                        => const ServerError(),
+    _                        => f,
   };
 }

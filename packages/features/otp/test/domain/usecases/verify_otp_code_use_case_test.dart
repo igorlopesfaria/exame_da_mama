@@ -84,14 +84,14 @@ void main() {
       );
     });
 
-    test('returns Left(ServerError) on any other failure', () async {
+    test('passes through NetworkFailure unchanged', () async {
       when(() => mockRepository.verifyCode(any(), value: any(named: 'value'), code: any(named: 'code')))
           .thenAnswer((_) async => left(const NetworkFailure()));
 
       final result = await useCase.call(OtpChannel.email, value: 'user@test.com', code: '123456');
 
       result.fold(
-        (f) => expect(f, isA<ServerError>()),
+        (f) => expect(f, isA<NetworkFailure>()),
         (_) => fail('expected Left'),
       );
     });

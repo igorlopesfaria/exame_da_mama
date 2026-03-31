@@ -63,14 +63,26 @@ void main() {
       );
     });
 
-    test('returns Left(ServerError) on any other failure', () async {
+    test('passes through NetworkFailure unchanged', () async {
       when(() => mockRepository.sendCode(any(), any()))
           .thenAnswer((_) async => left(const NetworkFailure()));
 
       final result = await useCase.call(OtpChannel.email, 'user@test.com');
 
       result.fold(
-        (f) => expect(f, isA<ServerError>()),
+        (f) => expect(f, isA<NetworkFailure>()),
+        (_) => fail('expected Left'),
+      );
+    });
+
+    test('passes through ServerFailure unchanged', () async {
+      when(() => mockRepository.sendCode(any(), any()))
+          .thenAnswer((_) async => left(const ServerFailure('error')));
+
+      final result = await useCase.call(OtpChannel.email, 'user@test.com');
+
+      result.fold(
+        (f) => expect(f, isA<ServerFailure>()),
         (_) => fail('expected Left'),
       );
     });

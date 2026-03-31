@@ -13,7 +13,7 @@ class SendOtpCodeUseCase {
   final OtpRepository _repository;
   final IObservability _observability;
 
-  Future<Either<OtpFailure, Unit>> call(OtpChannel channel, String value) async {
+  Future<Either<Failure, Unit>> call(OtpChannel channel, String value) async {
     final result = await _repository.sendCode(channel, value);
     return result.fold(
       (f) {
@@ -34,8 +34,8 @@ class SendOtpCodeUseCase {
     );
   }
 
-  OtpFailure _mapFailure(Failure f) => switch (f) {
+  Failure _mapFailure(Failure f) => switch (f) {
     TooManyRequestsFailure() => const TooManyAttempts(),
-    _                        => const ServerError(),
+    _                        => f,
   };
 }
