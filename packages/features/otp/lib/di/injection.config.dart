@@ -36,10 +36,7 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i369.OtpRemoteDataSourceImpl(gh<_i361.Dio>()),
     );
     gh.lazySingleton<_i174.OtpRepository>(
-      () => _i352.OtpRepositoryImpl(
-        gh<_i1068.OtpRemoteDataSource>(),
-        gh<_i731.IObservability>(),
-      ),
+      () => _i352.OtpRepositoryImpl(gh<_i1068.OtpRemoteDataSource>()),
     );
     gh.lazySingleton<_i273.SendOtpCodeUseCase>(
       () => _i273.SendOtpCodeUseCase(
