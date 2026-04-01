@@ -12,11 +12,17 @@ dependencies:
     sdk: flutter
 
   fpdart: ^1.1.0
+  injectable: ^2.6.0
+  get_it: ^9.1.1
   commons_infra:
     path: ../infra
+  commons_observability:
+    path: ../observability
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^6.0.0
+  build_runner: ^2.11.0
+  injectable_generator: ^2.12.1
   mocktail: ^1.0.4

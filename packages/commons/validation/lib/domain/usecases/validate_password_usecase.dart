@@ -1,6 +1,8 @@
 import 'package:commons_infra/failures/app_failures.dart';
+import 'package:commons_observability/commons_observability.dart';
 import 'package:commons_validation/domain/failures/validation_failure.dart';
 import 'package:fpdart/fpdart.dart';
+import 'package:injectable/injectable.dart';
 
 /// Indicates the strength of a validated password.
 ///
@@ -11,8 +13,11 @@ import 'package:fpdart/fpdart.dart';
 ///              categories present with length ≥ 12).
 enum PasswordStrength { weak, medium, strong }
 
+@injectable
 class ValidatePasswordUseCase {
-  const ValidatePasswordUseCase();
+  const ValidatePasswordUseCase(this._observability);
+
+  final IObservability _observability;
 
   static final _uppercase = RegExp(r'[A-Z]');
   static final _lowercase = RegExp(r'[a-z]');
@@ -20,16 +25,33 @@ class ValidatePasswordUseCase {
   static final _special = RegExp(r'[!@#$%^&*()\-_=+\[\]{};:,.<>?/\\|`~"' "'" r'@]');
 
   Either<Failure, PasswordStrength> call(String value) {
-    if (value.isEmpty) return const Left(RequiredField());
+    if (value.isEmpty) {
+      _observability.logger.error(
+        'validation.password.failed',
+        attributes: {'failureType': 'RequiredField'},
+      );
+      return const Left(RequiredField());
+    }
 
     final meetsMinimum = value.length >= 8 &&
         _uppercase.hasMatch(value) &&
         _digit.hasMatch(value) &&
         _special.hasMatch(value);
 
-    if (!meetsMinimum) return const Left(InvalidFormat());
+    if (!meetsMinimum) {
+      _observability.logger.error(
+        'validation.password.failed',
+        attributes: {'failureType': 'InvalidFormat'},
+      );
+      return const Left(InvalidFormat());
+    }
 
-    return Right(_computeStrength(value));
+    final strength = _computeStrength(value);
+    _observability.logger.info(
+      'validation.password.success',
+      attributes: {'strength': strength.name},
+    );
+    return Right(strength);
   }
 
   static PasswordStrength _computeStrength(String value) {

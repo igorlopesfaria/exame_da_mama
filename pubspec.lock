@@ -228,6 +228,13 @@ packages:
       relative: true
     source: path
     version: "1.0.0"
+  commons_validation:
+    dependency: "direct main"
+    description:
+      path: "packages/commons/validation"
+      relative: true
+    source: path
+    version: "1.0.0"
   convert:
     dependency: transitive
     description:

@@ -54,6 +54,7 @@ export 'package:flora/components/switch/flora_switch.dart';
 
 // Navigation — App Bar
 export 'package:flora/components/navigation/app_bar/flora_app_bar.dart';
+export 'package:flora/components/navigation/app_bar/flora_app_bar_action.dart';
 
 // Navigation — Navigation Bar
 export 'package:flora/components/navigation/navigation_bar/flora_navigation_bar.dart';

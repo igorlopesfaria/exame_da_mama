@@ -18,9 +18,15 @@ class FloraAppBarSample extends StatelessWidget {
               child: SizedBox(
                 height: kToolbarHeight,
                 child: FloraAppBar(
-                  title: const Text('Small App Bar'),
+                  title: 'Small App Bar',
                   automaticallyImplyLeading: false,
-                  actions: [IconButton(icon: const Icon(Icons.search), onPressed: () {})],
+                  actions: [
+                    FloraAppBarAction(
+                      flutterIcon: Icons.search,
+                      onPressed: () {},
+                      tooltip: 'Search',
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -35,9 +41,15 @@ class FloraAppBarSample extends StatelessWidget {
                 height: 112,
                 child: FloraAppBar(
                   variant: FloraAppBarVariant.medium,
-                  title: const Text('Medium App Bar'),
+                  title: 'Medium App Bar',
                   automaticallyImplyLeading: false,
-                  actions: [IconButton(icon: const Icon(Icons.more_vert), onPressed: () {})],
+                  actions: [
+                    FloraAppBarAction(
+                      flutterIcon: Icons.more_vert,
+                      onPressed: () {},
+                      tooltip: 'More options',
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -52,11 +64,19 @@ class FloraAppBarSample extends StatelessWidget {
                 height: 152,
                 child: FloraAppBar(
                   variant: FloraAppBarVariant.large,
-                  title: const Text('Large App Bar'),
+                  title: 'Large App Bar',
                   automaticallyImplyLeading: false,
                   actions: [
-                    IconButton(icon: const Icon(Icons.share), onPressed: () {}),
-                    IconButton(icon: const Icon(Icons.more_vert), onPressed: () {}),
+                    FloraAppBarAction(
+                      flutterIcon: Icons.share,
+                      onPressed: () {},
+                      tooltip: 'Share',
+                    ),
+                    FloraAppBarAction(
+                      flutterIcon: Icons.more_vert,
+                      onPressed: () {},
+                      tooltip: 'More options',
+                    ),
                   ],
                 ),
               ),
@@ -71,9 +91,41 @@ class FloraAppBarSample extends StatelessWidget {
               child: SizedBox(
                 height: kToolbarHeight,
                 child: FloraAppBar(
-                  title: const Text('Detail Screen'),
-                  leading: const Icon(Icons.arrow_back),
-                  actions: [IconButton(icon: const Icon(Icons.edit), onPressed: () {})],
+                  title: 'Detail Screen',
+                  leadingFlutterIcon: Icons.arrow_back,
+                  onLeadingPressed: () {},
+                  actions: [
+                    FloraAppBarAction(
+                      flutterIcon: Icons.edit,
+                      onPressed: () {},
+                      tooltip: 'Edit',
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+        SampleSection(
+          title: 'With progress step',
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: SizedBox(
+                height: kToolbarHeight,
+                child: FloraAppBar(
+                  automaticallyImplyLeading: false,
+                  leadingFlutterIcon: Icons.arrow_back,
+                  onLeadingPressed: () {},
+                  currentStep: 2,
+                  totalSteps: 5,
+                  actions: [
+                    FloraAppBarAction(
+                      flutterIcon: Icons.help_outline,
+                      onPressed: () {},
+                      tooltip: 'Help',
+                    ),
+                  ],
                 ),
               ),
             ),

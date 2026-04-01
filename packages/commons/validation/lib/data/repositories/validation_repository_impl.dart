@@ -2,7 +2,9 @@ import 'package:commons_infra/failures/app_failures.dart';
 import 'package:commons_validation/data/datasources/validation_remote_datasource.dart';
 import 'package:commons_validation/domain/repositories/i_validation_repository.dart';
 import 'package:fpdart/fpdart.dart';
+import 'package:injectable/injectable.dart';
 
+@Injectable(as: IValidationRepository)
 class ValidationRepositoryImpl implements IValidationRepository {
   const ValidationRepositoryImpl(this._datasource);
 

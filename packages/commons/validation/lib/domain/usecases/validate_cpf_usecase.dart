@@ -1,12 +1,16 @@
 import 'package:commons_infra/failures/app_failures.dart';
+import 'package:commons_observability/commons_observability.dart';
 import 'package:commons_validation/domain/failures/validation_failure.dart';
 import 'package:commons_validation/domain/repositories/i_validation_repository.dart';
 import 'package:fpdart/fpdart.dart';
+import 'package:injectable/injectable.dart';
 
+@injectable
 class ValidateCpfUseCase {
-  const ValidateCpfUseCase({this.repository});
+  const ValidateCpfUseCase(this._repository, this._observability);
 
-  final IValidationRepository? repository;
+  final IValidationRepository _repository;
+  final IObservability _observability;
 
   static final _digitsOnly = RegExp(r'\D');
 
@@ -14,16 +18,43 @@ class ValidateCpfUseCase {
     String value, {
     bool checkRemote = false,
   }) async {
-    if (value.trim().isEmpty) return const Left(RequiredField());
+    if (value.trim().isEmpty) {
+      _observability.logger.error(
+        'validation.cpf.failed',
+        attributes: {'failureType': 'RequiredField'},
+      );
+      return const Left(RequiredField());
+    }
 
     final digits = value.replaceAll(_digitsOnly, '');
 
-    if (!_isValidCpf(digits)) return const Left(InvalidFormat());
+    if (!_isValidCpf(digits)) {
+      _observability.logger.error(
+        'validation.cpf.failed',
+        attributes: {'failureType': 'InvalidFormat'},
+      );
+      return const Left(InvalidFormat());
+    }
 
-    if (!checkRemote || repository == null) return Right(digits);
+    if (!checkRemote) {
+      _observability.logger.info('validation.cpf.success');
+      return Right(digits);
+    }
 
-    final remoteResult = await repository!.validateCpf(digits);
-    return remoteResult.map((_) => digits);
+    final remoteResult = await _repository.validateCpf(digits);
+    return remoteResult.fold(
+      (failure) {
+        _observability.logger.error(
+          'validation.cpf.failed',
+          attributes: {'failureType': failure.runtimeType.toString()},
+        );
+        return Left(failure);
+      },
+      (_) {
+        _observability.logger.info('validation.cpf.success');
+        return Right(digits);
+      },
+    );
   }
 
   /// Official Brazilian two-digit CPF verification algorithm.

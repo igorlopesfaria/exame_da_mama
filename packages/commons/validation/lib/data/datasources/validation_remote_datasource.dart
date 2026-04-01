@@ -1,6 +1,7 @@
 import 'package:commons_infra/failures/app_failures.dart';
 import 'package:commons_infra/http/i_http_client.dart';
 import 'package:fpdart/fpdart.dart';
+import 'package:injectable/injectable.dart';
 
 abstract interface class IValidationRemoteDatasource {
   Future<Either<Failure, Unit>> validateEmail(String email);
@@ -8,6 +9,7 @@ abstract interface class IValidationRemoteDatasource {
   Future<Either<Failure, Unit>> validateCpf(String cpf);
 }
 
+@Injectable(as: IValidationRemoteDatasource)
 class ValidationRemoteDatasource implements IValidationRemoteDatasource {
   const ValidationRemoteDatasource(this._httpClient);
 

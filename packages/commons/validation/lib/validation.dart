@@ -1,3 +1,6 @@
+// DI
+export 'di/injection.dart';
+
 // Failures
 export 'domain/failures/validation_failure.dart';
 
