@@ -1,26 +1,33 @@
 import 'package:commons_infra/failures/app_failures.dart';
-import 'package:commons_validation/src/domain/failures/validation_failure.dart';
-import 'package:commons_validation/src/domain/validators/cpf/i_cpf_validator.dart';
+import 'package:commons_validation/domain/failures/validation_failure.dart';
+import 'package:commons_validation/domain/repositories/i_validation_repository.dart';
 import 'package:fpdart/fpdart.dart';
 
-class CpfValidator implements ICpfValidator {
-  const CpfValidator();
+class ValidateCpfUseCase {
+  const ValidateCpfUseCase({this.repository});
+
+  final IValidationRepository? repository;
 
   static final _digitsOnly = RegExp(r'\D');
 
-  @override
-  Either<Failure, String> validate(String value) {
+  Future<Either<Failure, String>> call(
+    String value, {
+    bool checkRemote = false,
+  }) async {
     if (value.trim().isEmpty) return const Left(RequiredField());
 
     final digits = value.replaceAll(_digitsOnly, '');
 
-    if (!_isValid(digits)) return const Left(InvalidFormat());
+    if (!_isValidCpf(digits)) return const Left(InvalidFormat());
 
-    return Right(digits);
+    if (!checkRemote || repository == null) return Right(digits);
+
+    final remoteResult = await repository!.validateCpf(digits);
+    return remoteResult.map((_) => digits);
   }
 
-  /// Implements the official Brazilian two-digit CPF verification algorithm.
-  static bool _isValid(String digits) {
+  /// Official Brazilian two-digit CPF verification algorithm.
+  static bool _isValidCpf(String digits) {
     if (digits.length != 11) return false;
 
     // Reject sequences of identical digits (e.g. 000.000.000-00)

@@ -1,6 +1,6 @@
 import 'package:commons_infra/failures/app_failures.dart';
-import 'package:commons_validation/src/domain/failures/validation_failure.dart';
-import 'package:commons_validation/src/domain/repositories/i_validation_repository.dart';
+import 'package:commons_validation/domain/failures/validation_failure.dart';
+import 'package:commons_validation/domain/repositories/i_validation_repository.dart';
 import 'package:fpdart/fpdart.dart';
 
 class ValidateEmailUseCase {
