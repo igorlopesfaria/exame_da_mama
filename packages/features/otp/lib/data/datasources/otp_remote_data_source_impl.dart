@@ -18,9 +18,9 @@ class OtpRemoteDataSourceImpl implements OtpRemoteDataSource {
   final IHttpClient _httpClient;
 
   @override
-  Future<int> sendCode(OtpChannel channel, String value) async {
+  Future<OtpSendCodeResponse> sendCode(OtpChannel channel, String value) async {
     final data = await _httpClient.post(channel._sendPath, data: {channel._key: value});
-    return OtpSendCodeResponse.fromJson(data).otpNextRequestIn;
+    return OtpSendCodeResponse.fromJson(data);
   }
 
   @override

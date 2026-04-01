@@ -28,6 +28,8 @@ dependencies:
     path: packages/commons/user
   commons_security:
     path: packages/commons/security
+  commons_validation:
+    path: packages/commons/validation
   feature_splash:
     path: packages/features/splash
   feature_initialization:

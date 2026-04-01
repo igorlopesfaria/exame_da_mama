@@ -1,6 +1,7 @@
 import 'package:commons_infra/exceptions/app_exceptions.dart';
 import 'package:commons_infra/failures/app_failures.dart';
 import 'package:feature_otp/data/datasources/otp_remote_data_source.dart';
+import 'package:feature_otp/data/models/otp_send_code_response.dart';
 import 'package:feature_otp/data/models/otp_verify_code_response.dart';
 import 'package:feature_otp/data/repositories/otp_repository_impl.dart';
 import 'package:feature_otp/domain/model/otp_channel.dart';
@@ -25,10 +26,11 @@ void main() {
 
   group('OtpRepositoryImpl.sendCode', () {
     const tNextRequestIn = 60;
+    const tResponse = OtpSendCodeResponse(otpNextRequestIn: tNextRequestIn);
 
     test('returns Right(nextRequestIn) on success', () async {
       when(() => mockDataSource.sendCode(any(), any()))
-          .thenAnswer((_) async => tNextRequestIn);
+          .thenAnswer((_) async => tResponse);
 
       final result = await repository.sendCode(OtpChannel.email, 'user@test.com');
 
@@ -37,7 +39,7 @@ void main() {
 
     test('delegates channel and value to data source', () async {
       when(() => mockDataSource.sendCode(any(), any()))
-          .thenAnswer((_) async => tNextRequestIn);
+          .thenAnswer((_) async => tResponse);
 
       await repository.sendCode(OtpChannel.phone, '+5511999999999');
 

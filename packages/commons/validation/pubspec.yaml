@@ -1,0 +1,22 @@
+name: commons_validation
+description: Validation module — centralizes field validation logic for the domain layer
+
+version: 1.0.0
+publish_to: "none"
+
+environment:
+  sdk: ">=3.9.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  fpdart: ^1.1.0
+  commons_infra:
+    path: ../infra
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  mocktail: ^1.0.4

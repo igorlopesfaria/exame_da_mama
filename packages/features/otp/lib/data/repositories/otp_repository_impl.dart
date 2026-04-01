@@ -2,6 +2,7 @@ import 'package:commons_infra/failures/app_failures.dart';
 import 'package:commons_infra/repository/base_repository.dart';
 import 'package:feature_otp/data/datasources/otp_remote_data_source.dart';
 import 'package:feature_otp/domain/model/otp_channel.dart';
+import 'package:feature_otp/domain/model/otp_next_request_in.dart';
 import 'package:feature_otp/domain/model/verification_token.dart';
 import 'package:feature_otp/domain/repositories/otp_repository.dart';
 import 'package:fpdart/fpdart.dart';
@@ -14,8 +15,8 @@ class OtpRepositoryImpl extends BaseRepository implements OtpRepository {
   final OtpRemoteDataSource _dataSource;
 
   @override
-  Future<Either<Failure, int>> sendCode(OtpChannel channel, String value) =>
-      safeCall(() => _dataSource.sendCode(channel, value));
+  Future<Either<Failure, OtpNextRequestIn>> sendCode(OtpChannel channel, String value) =>
+      safeCall(() => _dataSource.sendCode(channel, value).then((r) => r.otpNextRequestIn));
 
   @override
   Future<Either<Failure, VerificationToken>> verifyCode(
