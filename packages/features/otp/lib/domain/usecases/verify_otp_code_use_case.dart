@@ -14,7 +14,7 @@ class VerifyOtpCodeUseCase {
   final OtpRepository _repository;
   final IObservability _observability;
 
-  Future<Either<Failure, VerificationToken>> call(
+  Future<Either<Failure, OtpVerificationToken>> call(
     OtpChannel channel, {
     required String value,
     required String code,

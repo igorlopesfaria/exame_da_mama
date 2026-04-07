@@ -1,1 +1,1 @@
-typedef VerificationToken = String;
+typedef OtpVerificationToken = String;

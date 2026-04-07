@@ -23,7 +23,7 @@ class OtpRepositoryImpl extends BaseRepository implements OtpRepository {
           .then((r) => r.otpNextRequestIn));
 
   @override
-  Future<Either<Failure, VerificationToken>> verifyCode(
+  Future<Either<Failure, OtpVerificationToken>> verifyCode(
     OtpChannel channel, {
     required String value,
     required String code,
@@ -34,5 +34,5 @@ class OtpRepositoryImpl extends BaseRepository implements OtpRepository {
             value: value,
             code: code,
           ))
-          .then((r) => r.verificationToken));
+          .then((r) => r.otpVerificationToken));
 }

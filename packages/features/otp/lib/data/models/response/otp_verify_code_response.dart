@@ -1,10 +1,10 @@
 class OtpVerifyCodeResponse {
-  const OtpVerifyCodeResponse({required this.verificationToken});
+  const OtpVerifyCodeResponse({required this.otpVerificationToken});
 
-  final String verificationToken;
+  final String otpVerificationToken;
 
   factory OtpVerifyCodeResponse.fromJson(Map<String, dynamic> json) =>
       OtpVerifyCodeResponse(
-        verificationToken: json['verification_token'] as String,
+        otpVerificationToken: json['otp_verification_token'] as String,
       );
 }

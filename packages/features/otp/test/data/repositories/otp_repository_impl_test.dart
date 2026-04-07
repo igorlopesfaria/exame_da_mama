@@ -74,7 +74,7 @@ void main() {
 
     test('returns Right(token) on success', () async {
       when(() => mockDataSource.verifyCode(any()))
-          .thenAnswer((_) async => OtpVerifyCodeResponse(verificationToken: tToken));
+          .thenAnswer((_) async => OtpVerifyCodeResponse(otpVerificationToken: tToken));
 
       final result = await repository.verifyCode(
         OtpChannel.email,

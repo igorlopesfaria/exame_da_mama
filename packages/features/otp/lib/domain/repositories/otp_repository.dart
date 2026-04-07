@@ -6,7 +6,7 @@ import 'package:fpdart/fpdart.dart';
 
 abstract interface class OtpRepository {
   Future<Either<Failure, OtpNextRequestIn>> sendCode(OtpChannel channel, String value);
-  Future<Either<Failure, VerificationToken>> verifyCode(
+  Future<Either<Failure, OtpVerificationToken>> verifyCode(
     OtpChannel channel, {
     required String value,
     required String code,
