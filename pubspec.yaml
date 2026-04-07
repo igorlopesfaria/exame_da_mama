@@ -34,6 +34,8 @@ dependencies:
     path: packages/features/splash
   feature_initialization:
     path: packages/features/initialization
+  feature_register:
+    path: packages/features/register
   feature_otp:
     path: packages/features/otp
   flutter_bloc: ^9.1.1

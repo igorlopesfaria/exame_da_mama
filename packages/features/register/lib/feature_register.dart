@@ -1,0 +1,11 @@
+export 'di/injection.dart';
+export 'presentation/cubit/register_cubit.dart';
+export 'presentation/cubit/register_state.dart';
+export 'presentation/pages/birthdate/string/register_birthdate_localizations.dart';
+export 'presentation/pages/cpf/string/register_cpf_localizations.dart';
+export 'presentation/pages/email/string/register_email_localizations.dart';
+export 'presentation/pages/gender/string/register_gender_localizations.dart';
+export 'presentation/pages/name/string/register_name_localizations.dart';
+export 'presentation/pages/password/string/register_password_localizations.dart';
+export 'presentation/pages/phone/string/register_phone_localizations.dart';
+export 'presentation/screen/register_screen.dart';

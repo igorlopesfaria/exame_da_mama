@@ -1,5 +1,6 @@
 import 'package:commons_navigation/commons_navigation.dart';
 import 'package:feature_initialization/presentation/screen/initialization_screen.dart';
+import 'package:feature_register/presentation/screen/register_screen.dart';
 import 'package:feature_splash/presentation/screen/splash_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -19,6 +20,11 @@ class AppRouter {
       case AppPaths.initializationRoute:
         return _buildRoute(
           view: const InitializationScreen(),
+          settings: settings,
+        );
+      case AppPaths.registerRoute:
+        return _buildRoute(
+          view: const RegisterScreen(),
           settings: settings,
         );
 

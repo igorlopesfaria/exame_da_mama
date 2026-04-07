@@ -1,0 +1,40 @@
+name: feature_register
+description: Register feature — step-by-step user registration
+
+version: 1.0.0
+publish_to: "none"
+
+environment:
+  sdk: ">=3.9.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  intl: any
+  flutter_bloc: ^9.1.1
+  injectable: ^2.6.0
+  get_it: ^9.1.1
+  fpdart: ^1.2.0
+  commons_infra:
+    path: ../../commons/infra
+  commons_navigation:
+    path: ../../commons/navigation
+  commons_observability:
+    path: ../../commons/observability
+  flora:
+    path: ../../design_system/flora
+
+flutter:
+  generate: true
+  uses-material-design: true
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  build_runner: ^2.11.0
+  injectable_generator: ^2.12.1
+  mocktail: ^1.0.4
+  fake_async: any
