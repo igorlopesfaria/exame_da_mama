@@ -1,6 +1,8 @@
 import 'package:commons_infra/failures/app_failures.dart';
 import 'package:commons_infra/repository/base_repository.dart';
 import 'package:feature_otp/data/datasources/otp_remote_data_source.dart';
+import 'package:feature_otp/data/models/request/otp_send_code_request.dart';
+import 'package:feature_otp/data/models/request/otp_verify_code_request.dart';
 import 'package:feature_otp/domain/model/otp_channel.dart';
 import 'package:feature_otp/domain/model/otp_next_request_in.dart';
 import 'package:feature_otp/domain/model/verification_token.dart';
@@ -16,7 +18,9 @@ class OtpRepositoryImpl extends BaseRepository implements OtpRepository {
 
   @override
   Future<Either<Failure, OtpNextRequestIn>> sendCode(OtpChannel channel, String value) =>
-      safeCall(() => _dataSource.sendCode(channel, value).then((r) => r.otpNextRequestIn));
+      safeCall(() => _dataSource
+          .sendCode(OtpSendCodeRequest(channel: channel, value: value))
+          .then((r) => r.otpNextRequestIn));
 
   @override
   Future<Either<Failure, VerificationToken>> verifyCode(
@@ -25,6 +29,10 @@ class OtpRepositoryImpl extends BaseRepository implements OtpRepository {
     required String code,
   }) =>
       safeCall(() => _dataSource
-          .verifyCode(channel, value: value, code: code)
+          .verifyCode(OtpVerifyCodeRequest(
+            channel: channel,
+            value: value,
+            code: code,
+          ))
           .then((r) => r.verificationToken));
 }

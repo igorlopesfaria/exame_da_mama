@@ -1,4 +1,4 @@
-import 'package:feature_otp/data/models/otp_send_code_response.dart';
+import 'package:feature_otp/data/models/response/otp_send_code_response.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

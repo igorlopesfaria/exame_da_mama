@@ -1,1 +1,1 @@
-enum OtpChannel { email, phone }
+enum OtpChannel { email, phone, cpf }

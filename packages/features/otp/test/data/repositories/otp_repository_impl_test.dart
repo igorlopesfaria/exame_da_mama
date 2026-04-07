@@ -1,8 +1,10 @@
 import 'package:commons_infra/exceptions/app_exceptions.dart';
 import 'package:commons_infra/failures/app_failures.dart';
 import 'package:feature_otp/data/datasources/otp_remote_data_source.dart';
-import 'package:feature_otp/data/models/otp_send_code_response.dart';
-import 'package:feature_otp/data/models/otp_verify_code_response.dart';
+import 'package:feature_otp/data/models/request/otp_send_code_request.dart';
+import 'package:feature_otp/data/models/request/otp_verify_code_request.dart';
+import 'package:feature_otp/data/models/response/otp_send_code_response.dart';
+import 'package:feature_otp/data/models/response/otp_verify_code_response.dart';
 import 'package:feature_otp/data/repositories/otp_repository_impl.dart';
 import 'package:feature_otp/domain/model/otp_channel.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -11,12 +13,17 @@ import 'package:mocktail/mocktail.dart';
 
 class MockOtpRemoteDataSource extends Mock implements OtpRemoteDataSource {}
 
+class FakeOtpSendCodeRequest extends Fake implements OtpSendCodeRequest {}
+
+class FakeOtpVerifyCodeRequest extends Fake implements OtpVerifyCodeRequest {}
+
 void main() {
   late MockOtpRemoteDataSource mockDataSource;
   late OtpRepositoryImpl repository;
 
   setUpAll(() {
-    registerFallbackValue(OtpChannel.email);
+    registerFallbackValue(FakeOtpSendCodeRequest());
+    registerFallbackValue(FakeOtpVerifyCodeRequest());
   });
 
   setUp(() {
@@ -29,7 +36,7 @@ void main() {
     const tResponse = OtpSendCodeResponse(otpNextRequestIn: tNextRequestIn);
 
     test('returns Right(nextRequestIn) on success', () async {
-      when(() => mockDataSource.sendCode(any(), any()))
+      when(() => mockDataSource.sendCode(any()))
           .thenAnswer((_) async => tResponse);
 
       final result = await repository.sendCode(OtpChannel.email, 'user@test.com');
@@ -37,17 +44,8 @@ void main() {
       expect(result, right(tNextRequestIn));
     });
 
-    test('delegates channel and value to data source', () async {
-      when(() => mockDataSource.sendCode(any(), any()))
-          .thenAnswer((_) async => tResponse);
-
-      await repository.sendCode(OtpChannel.phone, '+5511999999999');
-
-      verify(() => mockDataSource.sendCode(OtpChannel.phone, '+5511999999999')).called(1);
-    });
-
     test('returns Left(NetworkFailure) on NetworkException', () async {
-      when(() => mockDataSource.sendCode(any(), any()))
+      when(() => mockDataSource.sendCode(any()))
           .thenThrow(const NetworkException());
 
       final result = await repository.sendCode(OtpChannel.email, 'user@test.com');
@@ -59,7 +57,7 @@ void main() {
     });
 
     test('returns Left(GenericFailure) on ServerException', () async {
-      when(() => mockDataSource.sendCode(any(), any()))
+      when(() => mockDataSource.sendCode(any()))
           .thenThrow(const ServerException(message: 'Internal error'));
 
       final result = await repository.sendCode(OtpChannel.email, 'user@test.com');
@@ -75,8 +73,8 @@ void main() {
     const tToken = 'verification-token-abc';
 
     test('returns Right(token) on success', () async {
-      when(() => mockDataSource.verifyCode(any(), value: any(named: 'value'), code: any(named: 'code')))
-          .thenAnswer((_) async => const OtpVerifyCodeResponse(verificationToken: tToken));
+      when(() => mockDataSource.verifyCode(any()))
+          .thenAnswer((_) async => OtpVerifyCodeResponse(verificationToken: tToken));
 
       final result = await repository.verifyCode(
         OtpChannel.email,
@@ -91,7 +89,7 @@ void main() {
     });
 
     test('returns Left(NetworkFailure) on NetworkException', () async {
-      when(() => mockDataSource.verifyCode(any(), value: any(named: 'value'), code: any(named: 'code')))
+      when(() => mockDataSource.verifyCode(any()))
           .thenThrow(const NetworkException());
 
       final result = await repository.verifyCode(
@@ -107,7 +105,7 @@ void main() {
     });
 
     test('returns Left(GenericFailure) on ServerException', () async {
-      when(() => mockDataSource.verifyCode(any(), value: any(named: 'value'), code: any(named: 'code')))
+      when(() => mockDataSource.verifyCode(any()))
           .thenThrow(const ServerException(message: 'Bad request'));
 
       final result = await repository.verifyCode(
@@ -123,7 +121,7 @@ void main() {
     });
 
     test('returns Left(ParseFailure) on ParseException', () async {
-      when(() => mockDataSource.verifyCode(any(), value: any(named: 'value'), code: any(named: 'code')))
+      when(() => mockDataSource.verifyCode(any()))
           .thenThrow(const ParseException());
 
       final result = await repository.verifyCode(

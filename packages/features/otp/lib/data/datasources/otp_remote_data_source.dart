@@ -1,12 +1,9 @@
-import 'package:feature_otp/data/models/otp_send_code_response.dart';
-import 'package:feature_otp/data/models/otp_verify_code_response.dart';
-import 'package:feature_otp/domain/model/otp_channel.dart';
+import 'package:feature_otp/data/models/request/otp_send_code_request.dart';
+import 'package:feature_otp/data/models/response/otp_send_code_response.dart';
+import 'package:feature_otp/data/models/request/otp_verify_code_request.dart';
+import 'package:feature_otp/data/models/response/otp_verify_code_response.dart';
 
 abstract interface class OtpRemoteDataSource {
-  Future<OtpSendCodeResponse> sendCode(OtpChannel channel, String value);
-  Future<OtpVerifyCodeResponse> verifyCode(
-    OtpChannel channel, {
-    required String value,
-    required String code,
-  });
+  Future<OtpSendCodeResponse> sendCode(OtpSendCodeRequest request);
+  Future<OtpVerifyCodeResponse> verifyCode(OtpVerifyCodeRequest request);
 }

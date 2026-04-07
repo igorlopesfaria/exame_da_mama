@@ -51,20 +51,6 @@ class InitializationButtons extends StatelessWidget {
             onPressed: cubit.goToLogin,
             variant: FloraButtonVariant.outlined,
             size: FloraButtonSize.large,
-            // onPressed: () async {
-            //   final token = await FloraBottomSheet.show(
-            //     context,
-            //     child: OtpScreen(
-            //       channel: OtpChannel.phone,       // or OtpChannel.phone
-            //       contact: '+5511976800990',     // email or phone number
-            //       initialCountdownSeconds: 60,
-            //       onSuccess: (token) {
-            //         // called immediately on success, before the sheet closes
-            //         // use token here if you need it synchronously
-            //       },
-            //     ),
-            //   );
-            // }
           ),
         ],
       ),

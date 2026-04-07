@@ -1,15 +1,10 @@
 import 'package:commons_infra/http/i_http_client.dart';
 import 'package:feature_otp/data/datasources/otp_remote_data_source.dart';
-import 'package:feature_otp/data/models/otp_send_code_response.dart';
-import 'package:feature_otp/data/models/otp_verify_code_response.dart';
-import 'package:feature_otp/domain/model/otp_channel.dart';
+import 'package:feature_otp/data/models/request/otp_send_code_request.dart';
+import 'package:feature_otp/data/models/response/otp_send_code_response.dart';
+import 'package:feature_otp/data/models/request/otp_verify_code_request.dart';
+import 'package:feature_otp/data/models/response/otp_verify_code_response.dart';
 import 'package:injectable/injectable.dart';
-
-extension _OtpChannelPaths on OtpChannel {
-  String get _key => name;
-  String get _sendPath => '/verification-codes/$name';
-  String get _verifyPath => '/verification-codes/$name/verify';
-}
 
 @LazySingleton(as: OtpRemoteDataSource)
 class OtpRemoteDataSourceImpl implements OtpRemoteDataSource {
@@ -18,20 +13,19 @@ class OtpRemoteDataSourceImpl implements OtpRemoteDataSource {
   final IHttpClient _httpClient;
 
   @override
-  Future<OtpSendCodeResponse> sendCode(OtpChannel channel, String value) async {
-    final data = await _httpClient.post(channel._sendPath, data: {channel._key: value});
+  Future<OtpSendCodeResponse> sendCode(OtpSendCodeRequest request) async {
+    final data = await _httpClient.post(
+      '/otp',
+      data: request.toJson(),
+    );
     return OtpSendCodeResponse.fromJson(data);
   }
 
   @override
-  Future<OtpVerifyCodeResponse> verifyCode(
-    OtpChannel channel, {
-    required String value,
-    required String code,
-  }) async {
+  Future<OtpVerifyCodeResponse> verifyCode(OtpVerifyCodeRequest request) async {
     final data = await _httpClient.post(
-      channel._verifyPath,
-      data: {channel._key: value, 'code': code},
+      '/otp/verify',
+      data: request.toJson(),
     );
     return OtpVerifyCodeResponse.fromJson(data);
   }
