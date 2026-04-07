@@ -19,6 +19,8 @@ dependencies:
   fpdart: ^1.2.0
   commons_infra:
     path: ../../commons/infra
+  commons_validation:
+    path: ../../commons/validation
   commons_navigation:
     path: ../../commons/navigation
   commons_observability:

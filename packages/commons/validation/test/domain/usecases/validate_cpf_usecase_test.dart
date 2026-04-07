@@ -1,3 +1,4 @@
+import 'package:commons_infra/failures/app_failures.dart';
 import 'package:commons_observability/commons_observability.dart';
 import 'package:commons_validation/domain/failures/validation_failure.dart';
 import 'package:commons_validation/domain/repositories/i_validation_repository.dart';
@@ -49,9 +50,9 @@ void main() {
       expect(result, right(validCpf2));
     });
 
-    test('strips mask and returns digits only', () async {
+    test('returns value unchanged for valid masked CPF', () async {
       final result = await useCase(validCpfMasked);
-      expect(result, right(validCpf));
+      expect(result, right(validCpfMasked));
     });
 
     test('returns Left(RequiredField) for empty string', () async {
@@ -132,20 +133,40 @@ void main() {
       verify(() => mockLogger.info('validation.cpf.success')).called(1);
     });
 
-    test('logs error with RequiredField on empty input', () async {
+    test('logs info with RequiredField on empty input', () async {
       await useCase('');
-      verify(() => mockLogger.error(
+      verify(() => mockLogger.info(
         'validation.cpf.failed',
         attributes: {'failureType': 'RequiredField'},
       )).called(1);
     });
 
-    test('logs error with InvalidFormat on invalid CPF', () async {
+    test('logs info with InvalidFormat on 11-digit invalid CPF', () async {
       await useCase('00000000000');
-      verify(() => mockLogger.error(
+      verify(() => mockLogger.info(
         'validation.cpf.failed',
         attributes: {'failureType': 'InvalidFormat'},
       )).called(1);
+    });
+
+    test('does not log for InvalidFormat with fewer than 11 digits', () async {
+      await useCase('1234567890'); // 10 digits
+      verifyNever(() => mockLogger.info(
+        'validation.cpf.failed',
+        attributes: {'failureType': 'InvalidFormat'},
+      ));
+      verifyNever(() => mockLogger.error(any(), attributes: any(named: 'attributes')));
+    });
+
+    test('logs info on NetworkFailure', () async {
+      when(() => mockRepository.validateCpf(any()))
+          .thenAnswer((_) async => left(const NetworkFailure()));
+      await useCase(validCpf, checkRemote: true);
+      verify(() => mockLogger.info(
+        'validation.cpf.failed',
+        attributes: {'failureType': 'NetworkFailure'},
+      )).called(1);
+      verifyNever(() => mockLogger.error(any(), attributes: any(named: 'attributes')));
     });
 
     test('logs success on remote success', () async {

@@ -31,6 +31,7 @@ export 'package:flora/components/buttons/fab/flora_fab.dart';
 export 'package:flora/components/inputs/flora_text_field_attributes.dart';
 export 'package:flora/components/inputs/flora_text_field_style.dart';
 export 'package:flora/components/inputs/flora_text_field.dart';
+export 'package:flora/components/inputs/flora_input_formatters.dart';
 
 // Text Input Code
 export 'package:flora/components/inputs/code/flora_text_input_code_attributes.dart';

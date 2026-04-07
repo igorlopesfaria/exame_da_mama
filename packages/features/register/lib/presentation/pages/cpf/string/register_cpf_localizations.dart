@@ -32,8 +32,11 @@ abstract class RegisterCpfLocalizations {
 
   String get title;
   String get description;
+  String get cpfLabel;
   String get continueButton;
   String get errorInvalidCpf;
+  String get errorNoInternet;
+  String get errorGeneric;
 }
 
 class _RegisterCpfLocalizationsDelegate

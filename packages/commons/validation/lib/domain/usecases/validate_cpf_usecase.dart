@@ -19,7 +19,7 @@ class ValidateCpfUseCase {
     bool checkRemote = false,
   }) async {
     if (value.trim().isEmpty) {
-      _observability.logger.error(
+      _observability.logger.info(
         'validation.cpf.failed',
         attributes: {'failureType': 'RequiredField'},
       );
@@ -29,25 +29,34 @@ class ValidateCpfUseCase {
     final digits = value.replaceAll(_digitsOnly, '');
 
     if (!_isValidCpf(digits)) {
-      _observability.logger.error(
-        'validation.cpf.failed',
-        attributes: {'failureType': 'InvalidFormat'},
-      );
+      if (digits.length == 11) {
+        _observability.logger.info(
+          'validation.cpf.failed',
+          attributes: {'failureType': 'InvalidFormat'},
+        );
+      }
       return const Left(InvalidFormat());
     }
 
     if (!checkRemote) {
       _observability.logger.info('validation.cpf.success');
-      return Right(digits);
+      return Right(value);
     }
 
     final remoteResult = await _repository.validateCpf(digits);
     return remoteResult.fold(
       (failure) {
-        _observability.logger.error(
-          'validation.cpf.failed',
-          attributes: {'failureType': failure.runtimeType.toString()},
-        );
+        if (failure is NetworkFailure) {
+          _observability.logger.info(
+            'validation.cpf.failed',
+            attributes: {'failureType': 'NetworkFailure'},
+          );
+        } else {
+          _observability.logger.error(
+            'validation.cpf.failed',
+            attributes: {'failureType': failure.runtimeType.toString()},
+          );
+        }
         return Left(failure);
       },
       (_) {

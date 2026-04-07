@@ -28,7 +28,7 @@ class FloraTextField extends StatelessWidget {
     int? maxLines = 1,
     int? maxLength,
     List<TextInputFormatter>? inputFormatters,
-    FloraTextFieldVariant variant = FloraTextFieldVariant.filled,
+    FloraTextFieldVariant variant = FloraTextFieldVariant.outlined,
     bool autofocus = false,
   }) : _attributes = FloraTextFieldAttributes(
          label: label,

@@ -9,6 +9,8 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'package:commons_validation/domain/usecases/validate_cpf_usecase.dart'
+    as _i888;
 import 'package:feature_register/presentation/cubit/register_cubit.dart'
     as _i536;
 import 'package:feature_register/presentation/pages/birthdate/cubit/register_birthdate_cubit.dart'
@@ -39,7 +41,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i50.RegisterBirthdateCubit>(
       () => _i50.RegisterBirthdateCubit(),
     );
-    gh.factory<_i505.RegisterCpfCubit>(() => _i505.RegisterCpfCubit());
     gh.factory<_i753.RegisterEmailCubit>(() => _i753.RegisterEmailCubit());
     gh.factory<_i1043.RegisterGenderCubit>(() => _i1043.RegisterGenderCubit());
     gh.factory<_i410.RegisterNameCubit>(() => _i410.RegisterNameCubit());
@@ -47,6 +48,9 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i673.RegisterPasswordCubit(),
     );
     gh.factory<_i901.RegisterPhoneCubit>(() => _i901.RegisterPhoneCubit());
+    gh.factory<_i505.RegisterCpfCubit>(
+      () => _i505.RegisterCpfCubit(gh<_i888.ValidateCpfUseCase>()),
+    );
     return this;
   }
 }
